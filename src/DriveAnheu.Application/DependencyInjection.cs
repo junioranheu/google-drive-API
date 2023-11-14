@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using DriveAnheu.Application.AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Logging;
 
 namespace DriveAnheu.Application
 {
@@ -42,27 +44,27 @@ namespace DriveAnheu.Application
 
         private static void AddUseCases(IServiceCollection services)
         {
-            services.AddLogsApplication();
-            services.AddTokensApplication();
-            services.AddUsuariosApplication();
-            services.AddUsuariosRolesApplication();
-            services.AddWardsApplication();
-            services.AddHashtagsApplication();
-            services.AddWardsHashtagsApplication();
-            services.AddAuxiliaresApplication();
-            services.AddFeriadosApplication();
-            services.AddFeriadosDatasApplication();
-            services.AddFeriadosEstadosApplication();
-            services.AddNewslettersCadastrosApplication();
-            services.AddChatGPTApplication();
+            //services.AddLogsApplication();
+            //services.AddTokensApplication();
+            //services.AddUsuariosApplication();
+            //services.AddUsuariosRolesApplication();
+            //services.AddWardsApplication();
+            //services.AddHashtagsApplication();
+            //services.AddWardsHashtagsApplication();
+            //services.AddAuxiliaresApplication();
+            //services.AddFeriadosApplication();
+            //services.AddFeriadosDatasApplication();
+            //services.AddFeriadosEstadosApplication();
+            //services.AddNewslettersCadastrosApplication();
+            //services.AddChatGPTApplication();
         }
 
         private static void AddServices(IServiceCollection services)
         {
-            services.AddExportsService();
-            services.AddImportsService();
-            services.AddUsuariosService();
-            services.AddResetarBancoDadosService();
+            //services.AddExportsService();
+            //services.AddImportsService();
+            //services.AddUsuariosService();
+            //services.AddResetarBancoDadosService();
         }
     }
 }

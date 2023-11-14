@@ -1,6 +1,8 @@
 using DriveAnheu.API;
 using DriveAnheu.Application.Hubs.MiscHub;
 using DriveAnheu.Domain.Consts;
+using DriveAnheu.Infrastructure;
+using DriveAnheu.Application;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.FileProviders;
 using Swashbuckle.AspNetCore.SwaggerUI;
@@ -26,7 +28,6 @@ WebApplication app = builder.Build();
         app.UseSwaggerUI(c =>
         {
             c.SwaggerEndpoint("/swagger/v1/swagger.json", $"{SistemaConst.NomeSistema}.API");
-            // c.RoutePrefix = ""; // ***
             c.DocExpansion(DocExpansion.None);
         });
 
