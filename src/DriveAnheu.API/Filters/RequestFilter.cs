@@ -8,15 +8,8 @@ using Newtonsoft.Json.Linq;
 
 namespace DriveAnheu.API.Filters
 {
-    public sealed class RequestFilter : ActionFilterAttribute
+    public sealed class RequestFilter(ICriarLogCommand _criarLogCommand) : ActionFilterAttribute
     {
-        private readonly ICriarLogCommand _criarLogCommand;
-
-        public RequestFilter(ICriarLogCommand criarLogCommand)
-        {
-            _criarLogCommand = criarLogCommand;
-        }
-
         public override async Task OnActionExecutionAsync(ActionExecutingContext filterContextExecuting, ActionExecutionDelegate next)
         {
             if (filterContextExecuting.HttpContext.RequestAborted.IsCancellationRequested)
@@ -29,7 +22,7 @@ namespace DriveAnheu.API.Filters
             HttpRequest request = filterContextExecuted.HttpContext.Request;
             int? statusResposta = (filterContextExecuted.Result as ObjectResult)?.StatusCode;
 
-            int usuarioId =  new BaseFilter().BaseObterUsuarioId(filterContextExecuted);
+            int usuarioId = new BaseFilter().BaseObterUsuarioId(filterContextExecuted);
             string parametros = ObterParametrosRequisicao(filterContextExecuting);
             string parametrosNormalizados = NormalizarParametros(parametros);
 

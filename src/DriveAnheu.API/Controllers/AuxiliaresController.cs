@@ -6,15 +6,8 @@ namespace DriveAnheu.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuxiliaresController : Controller
+    public class AuxiliaresController(IConnectionFactory _connectionFactory) : Controller
     {
-        private readonly IConnectionFactory _connectionFactory;
-
-        public AuxiliaresController(IConnectionFactory connectionFactory)
-        {
-            _connectionFactory = connectionFactory;
-        }
-
         [HttpGet("obterStatusBanco")]
         [AllowAnonymous]
         public async Task<ActionResult<(bool, string)>> ObterStatusBanco(CancellationToken cancellationToken = default)

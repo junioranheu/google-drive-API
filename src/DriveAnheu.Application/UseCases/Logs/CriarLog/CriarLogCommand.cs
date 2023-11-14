@@ -3,15 +3,8 @@ using DriveAnheu.Infrastructure.Data;
 
 namespace DriveAnheu.Application.UseCases.Logs.CriarLog
 {
-    public sealed class CriarLogCommand : ICriarLogCommand
+    public sealed class CriarLogCommand(DriveAnheuContext _context) : ICriarLogCommand
     {
-        private readonly DriveAnheuContext _context;
-
-        public CriarLogCommand(DriveAnheuContext context)
-        {
-            _context = context;
-        }
-
         public async Task Execute(Log input)
         {
             _context.ChangeTracker.Clear();
