@@ -1,4 +1,5 @@
-﻿using DriveAnheu.Application.Hubs.Shared.Utils;
+﻿using DriveAnheu.Application.Hubs.MiscHub.Models.Output;
+using DriveAnheu.Application.Hubs.Shared.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
@@ -10,7 +11,7 @@ namespace DriveAnheu.Application.Hubs.MiscHub
     public sealed class MiscHub : Hub
     {
         const string grupo = "_online";
-        private static readonly List<UsuarioOnlineResponse> listaUsuarioOnline = new();
+        private static readonly List<UsuarioOnlineResponse> listaUsuarioOnline = [];
 
         public override async Task OnConnectedAsync()
         {
@@ -19,8 +20,8 @@ namespace DriveAnheu.Application.Hubs.MiscHub
                 throw new Exception($"Usuário não autenticado");
             }
 
-            string usuarioNome = Misc.ConverterObjetoParaString(Context.User.FindFirst(ClaimTypes.Name)?.Value);
-            string usuarioId = Misc.ConverterObjetoParaString(Context.User.FindFirst(ClaimTypes.Email)?.Value);
+            string usuarioId = Misc.ConverterObjetoParaString(Context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            string usuarioGuid = Misc.ConverterObjetoParaString(Context.User.FindFirst(ClaimTypes.Thumbprint)?.Value);
             string signalR_ConnectionId = Misc.ConverterObjetoParaString(Context.ConnectionId);
 
             // Adicionar o usuário (signalR_ConnectionId) no grupo (IGroupManager, nativo do SignalR);
@@ -33,13 +34,12 @@ namespace DriveAnheu.Application.Hubs.MiscHub
             {
                 UsuarioOnlineResponse u = new()
                 {
-                    UsuarioNome = usuarioNome,
                     UsuarioId = usuarioId,
+                    UsuarioGuid = usuarioGuid,
                     ConnectionId = signalR_ConnectionId
                 };
 
                 listaUsuarioOnline.Add(u);
-                await EnviarMensagem(mensagem: $"O usuário {usuarioNome} entrou no chat", isAvisoSistema: true);
             }
             else
             {
@@ -60,8 +60,6 @@ namespace DriveAnheu.Application.Hubs.MiscHub
             if (checkUsuario is not null)
             {
                 await Groups.RemoveFromGroupAsync(signalR_ConnectionId, grupo);
-
-                await EnviarMensagem(mensagem: $"O usuário {checkUsuario?.UsuarioNome} saiu do chat", isAvisoSistema: true);
                 listaUsuarioOnline.Remove(checkUsuario!);
             }
 
@@ -69,51 +67,9 @@ namespace DriveAnheu.Application.Hubs.MiscHub
             await base.OnDisconnectedAsync(exception);
         }
 
-        public async Task EnviarMensagem(string mensagem, bool? isAvisoSistema = false)
-        {
-            ChatHubResponse response = CriarResponse(Context.ConnectionId, listaUsuarioOnline, Context.User, mensagem, isAvisoSistema.GetValueOrDefault());
-            await Clients.Group(grupo).SendAsync(ObterNomeDoMetodo(), response);
-        }
-
-        public async Task EnviarMensagemPrivada(string usuarioIdDestinatario, string mensagem, bool? isAvisoSistema = false)
-        {
-            UsuarioOnlineResponse? checkUsuarioDestinatario = listaUsuarioOnline.FirstOrDefault(x => x.UsuarioId == usuarioIdDestinatario) ?? throw new Exception($"Usuário não encontrado");
-
-            ChatHubResponse response = CriarResponse(Context.ConnectionId, listaUsuarioOnline, Context.User, mensagem, isAvisoSistema.GetValueOrDefault(), usuarioIdDestinatario);
-
-            string nomeMetodoAtual = ObterNomeDoMetodo();
-            await Clients.Client(Context.ConnectionId).SendAsync(nomeMetodoAtual, response);
-            await Clients.Client(checkUsuarioDestinatario?.ConnectionId!).SendAsync(nomeMetodoAtual, response);
-        }
-
         public async Task ObterListaUsuariosOnline()
         {
             await Clients.Group(grupo).SendAsync(ObterNomeDoMetodo(), listaUsuarioOnline);
-        }
-
-        private static ChatHubResponse CriarResponse(string connectionId, List<UsuarioOnlineResponse> listaUsuarioOnline, ClaimsPrincipal? claims, string mensagem, bool? isAvisoSistema = false, string? usuarioIdDestinatario = null)
-        {
-            if (!isAvisoSistema.GetValueOrDefault() && !listaUsuarioOnline.Any(x => x.ConnectionId == connectionId))
-            {
-                throw new Exception($"ConnectionId inválido"); // Quando por exemplo, um usuário entra em uma nova aba, ele inválida a sessão (ConnectionId);
-            }
-
-            string usuarioNome = Misc.ConverterObjetoParaString(claims?.FindFirst(ClaimTypes.Name)?.Value);
-            string usuarioId = Misc.ConverterObjetoParaString(claims?.FindFirst(ClaimTypes.Email)?.Value);
-
-            string? usuarioNomeDestinatario = usuarioIdDestinatario is null ? null : (listaUsuarioOnline.Where(x => x.UsuarioId == usuarioIdDestinatario).FirstOrDefault()?.UsuarioNome ?? string.Empty);
-
-            ChatHubResponse response = new()
-            {
-                Mensagem = mensagem,
-                UsuarioNome = isAvisoSistema.GetValueOrDefault() ? null : usuarioNome,
-                UsuarioId = isAvisoSistema.GetValueOrDefault() ? null : usuarioId,
-                IsSistema = isAvisoSistema.GetValueOrDefault(),
-                UsuarioNomeDestinatario = usuarioNomeDestinatario,
-                UsuarioIdDestinatario = usuarioIdDestinatario
-            };
-
-            return response;
         }
     }
 }
