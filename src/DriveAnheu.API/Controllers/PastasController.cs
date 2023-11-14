@@ -2,7 +2,9 @@
 
 namespace DriveAnheu.API.Controllers
 {
-    public class PastasController : Controller
+    [ApiController]
+    [Route("api/[controller]")]
+    public class PastasController : BaseController<PastasController>
     {
         public IActionResult Index()
         {

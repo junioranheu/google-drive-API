@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DriveAnheu.Application.UseCases.Usuarios.Shared.Output;
 using DriveAnheu.Domain.Entities;
 
 namespace DriveAnheu.Application.AutoMapper
@@ -8,18 +9,18 @@ namespace DriveAnheu.Application.AutoMapper
         public AutoMapperConfig()
         {
             // Outros;
-            CreateMap<Log, LogOutput>();
+            //CreateMap<Log, LogOutput>();
 
             // Usuários;
-            CreateMap<UsuarioInput, Usuario>();
+            //CreateMap<UsuarioInput, Usuario>();
             CreateMap<Usuario, UsuarioOutput>();
 
             // Principal;
-            CreateMap<PastaInput, Pasta>();
-            CreateMap<Pasta, PastaOutput>();
+            //CreateMap<PastaInput, Pasta>();
+            //CreateMap<Pasta, PastaOutput>();
 
-            CreateMap<ItemInput, Item>();
-            CreateMap<Item, ItemOutput>();
+            //CreateMap<ItemInput, Item>();
+            //CreateMap<Item, ItemOutput>();
         }
     }
 }
