@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DriveAnheu.Application.UseCases.Usuarios.ObterUsuario
 {
-    public sealed class ObterUsuarioQuery(DriveAnheuContext _context, IMapper _map) : IObterUsuarioQuery
+    public sealed class ObterUsuarioQuery(DriveAnheuContext _context, IMapper _mapper) : IObterUsuarioQuery
     {
         public async Task<UsuarioOutput?> Execute(int? id, Guid guid)
         {
@@ -16,7 +16,7 @@ namespace DriveAnheu.Application.UseCases.Usuarios.ObterUsuario
                                 (guid != Guid.Empty ? u.Guid == guid : true)
                             ).AsNoTracking().FirstOrDefaultAsync();
 
-            return _map.Map<UsuarioOutput>(linq);
+            return _mapper.Map<UsuarioOutput>(linq);
         }
     }
 }

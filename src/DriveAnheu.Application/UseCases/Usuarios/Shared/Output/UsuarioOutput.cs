@@ -7,5 +7,7 @@
         public Guid Guid { get; set; } = Guid.Empty;
 
         public DateTime Data { get; set; }
+
+        public string? Token { get; set; } = string.Empty;
     }
 }
