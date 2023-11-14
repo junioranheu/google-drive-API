@@ -1,5 +1,7 @@
 ﻿using DriveAnheu.API.Filters;
+using DriveAnheu.Application.UseCases.Usuarios.Shared.Input;
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.ResponseCompression;
 using System.IO.Compression;
@@ -82,7 +84,7 @@ namespace DriveAnheu.API
             services.AddFluentValidationAutoValidation();
             services.AddFluentValidationClientsideAdapters();
 
-            AssemblyScanner? validators = AssemblyScanner.FindValidatorsInAssemblyContaining<WardInputAltValidator>();
+            AssemblyScanner? validators = AssemblyScanner.FindValidatorsInAssemblyContaining<AutenticarUsuarioInput>();
             validators.ForEach(x => services.AddValidatorsFromAssemblyContaining(x.ValidatorType));
         }
     }

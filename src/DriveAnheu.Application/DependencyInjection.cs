@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DriveAnheu.Application.AutoMapper;
+using DriveAnheu.Application.UseCases.Logs;
 using DriveAnheu.Application.UseCases.Usuarios;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -44,6 +45,7 @@ namespace DriveAnheu.Application
 
         private static void AddUseCases(IServiceCollection services)
         {
+            services.AddLogsApplication();
             services.AddUsuariosApplication();
         }
     }

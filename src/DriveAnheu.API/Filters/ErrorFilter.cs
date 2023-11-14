@@ -1,6 +1,8 @@
 ﻿using DriveAnheu.API.Filters.Base;
-using Microsoft.AspNetCore.Mvc.Filters;
+using DriveAnheu.Application.UseCases.Logs.CriarLog;
+using DriveAnheu.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using static junioranheu_utils_package.Fixtures.Get;
 
 namespace DriveAnheu.API.Filters
@@ -8,12 +10,12 @@ namespace DriveAnheu.API.Filters
     public sealed class ErrorFilter : ExceptionFilterAttribute
     {
         private readonly ILogger _logger;
-        private readonly ICriarLogUseCase _criarLogUseCase;
+        private readonly ICriarLogCommand _criarLogCommand;
 
-        public ErrorFilter(ILogger<ErrorFilter> logger, ICriarLogUseCase criarLogUseCase)
+        public ErrorFilter(ILogger<ErrorFilter> logger, ICriarLogCommand criarLogCommand)
         {
             _logger = logger;
-            _criarLogUseCase = criarLogUseCase;
+            _criarLogCommand = criarLogCommand;
         }
 
         public override async Task OnExceptionAsync(ExceptionContext context)
@@ -40,7 +42,7 @@ namespace DriveAnheu.API.Filters
 
         private async Task CriarLog(ExceptionContext context, string mensagemErro, int? usuarioId)
         {
-            LogInput log = new()
+            Log log = new()
             {
                 TipoRequisicao = context.HttpContext.Request.Method ?? string.Empty,
                 Endpoint = context.HttpContext.Request.Path.ToString() ?? string.Empty,
@@ -50,7 +52,7 @@ namespace DriveAnheu.API.Filters
                 UsuarioId = usuarioId > 0 ? usuarioId : null
             };
 
-            await _criarLogUseCase.Execute(log);
+            await _criarLogCommand.Execute(log);
         }
 
         private void ExibirILogger(Exception ex, string mensagemErro)

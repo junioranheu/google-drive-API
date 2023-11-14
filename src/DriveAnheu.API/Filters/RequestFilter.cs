@@ -1,4 +1,6 @@
 ﻿using DriveAnheu.API.Filters.Base;
+using DriveAnheu.Application.UseCases.Logs.CriarLog;
+using DriveAnheu.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
@@ -8,11 +10,11 @@ namespace DriveAnheu.API.Filters
 {
     public sealed class RequestFilter : ActionFilterAttribute
     {
-        private readonly ICriarLogUseCase _criarLogUseCase;
+        private readonly ICriarLogCommand _criarLogCommand;
 
-        public RequestFilter(ICriarLogUseCase criarLogUseCase)
+        public RequestFilter(ICriarLogCommand criarLogCommand)
         {
-            _criarLogUseCase = criarLogUseCase;
+            _criarLogCommand = criarLogCommand;
         }
 
         public override async Task OnActionExecutionAsync(ActionExecutingContext filterContextExecuting, ActionExecutionDelegate next)
@@ -31,7 +33,7 @@ namespace DriveAnheu.API.Filters
             string parametros = ObterParametrosRequisicao(filterContextExecuting);
             string parametrosNormalizados = NormalizarParametros(parametros);
 
-            LogInput log = new()
+            Log log = new()
             {
                 TipoRequisicao = request.Method ?? string.Empty,
                 Endpoint = request.Path.Value ?? string.Empty,
@@ -41,7 +43,7 @@ namespace DriveAnheu.API.Filters
                 UsuarioId = usuarioId > 0 ? usuarioId : null
             };
 
-            await _criarLogUseCase.Execute(log);
+            await _criarLogCommand.Execute(log);
         }
 
         private static string ObterParametrosRequisicao(ActionExecutingContext filterContextExecuting)

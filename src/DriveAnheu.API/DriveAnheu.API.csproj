@@ -5,10 +5,12 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<InvariantGlobalization>true</InvariantGlobalization>
+		<UserSecretsId>15fcf7d3-9077-4640-982c-fe5f4b1b0f64</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="FluentValidation" Version="11.8.0" />
+		<PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
 	</ItemGroup>
 
