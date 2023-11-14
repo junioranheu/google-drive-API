@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="junioranheu-utils-package" Version="1.0.9" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.14" />
   </ItemGroup>
 
 </Project>
