@@ -1,4 +1,7 @@
-﻿using DriveAnheu.Application.UseCases.Pastas.ObterPasta;
+﻿using DriveAnheu.Application.UseCases.Pastas.CriarPasta;
+using DriveAnheu.Application.UseCases.Pastas.ListarPasta;
+using DriveAnheu.Application.UseCases.Pastas.ObterPasta;
+using DriveAnheu.Application.UseCases.Pastas.Shared.Input;
 using DriveAnheu.Application.UseCases.Pastas.Shared.Output;
 using DriveAnheu.Domain.Consts;
 using Microsoft.AspNetCore.Authorization;
@@ -9,7 +12,11 @@ namespace DriveAnheu.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class PastasController(IObterPastaQuery _obterPastaQuery) : BaseController<PastasController>
+    public class PastasController(
+        IObterPastaQuery _obterPastaQuery,
+        IListarPastaQuery _listarPastaQuery,
+        ICriarPastaCommand _criarPastaCommand
+        ) : BaseController<PastasController>
     {
         [HttpGet]
         [Authorize]
@@ -29,5 +36,28 @@ namespace DriveAnheu.API.Controllers
 
             return Ok(output);
         }
+
+        [HttpGet("listar")]
+        [Authorize]
+        public async Task<ActionResult<PastaOutput>> Listar(Guid? guid)
+        {
+            List<PastaOutput>? output = await _listarPastaQuery.Execute(guid);
+
+            if (output?.Count == 0)
+            {
+                throw new Exception(ObterDescricaoEnum(CodigoErroEnum.NaoEncontrado));
+            }
+
+            return Ok(output);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult> Criar([FromForm] PastaInput input)
+        {
+            await _criarPastaCommand.Execute(input);
+            return Ok();
+        }
+
     }
 }
