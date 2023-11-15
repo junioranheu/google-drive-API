@@ -3,6 +3,7 @@ using System;
 using DriveAnheu.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DriveAnheu.Infrastructure.Migrations
 {
     [DbContext(typeof(DriveAnheuContext))]
-    partial class DriveAnheuContextModelSnapshot : ModelSnapshot
+    [Migration("20231114202056_AddPasta")]
+    partial class AddPasta
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
