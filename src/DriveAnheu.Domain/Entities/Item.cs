@@ -19,11 +19,11 @@ namespace DriveAnheu.Domain.Entities
 
         public ItemTipoEnum Tipo { get; set; }
 
+        public Guid? GuidPastaPai { get; set; } = null;
+
         public int? UsuarioId { get; set; }
         public Usuario? Usuarios { get; init; }
 
         public DateTime Data { get; set; } = GerarHorarioBrasilia();
-
-        public Guid? GuidPastaPai { get; set; } = null;
     }
 }
