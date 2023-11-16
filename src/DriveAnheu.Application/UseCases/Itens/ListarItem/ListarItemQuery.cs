@@ -11,7 +11,7 @@ namespace DriveAnheu.Application.UseCases.Itens.ListarItem
         public async Task<List<ItemOutput>?> Execute(Guid? guidPastaPai)
         {
             List<Item>? linq = await _context.Itens.
-                               Where(p => (guidPastaPai != Guid.Empty ? p.GuidPastaPai == guidPastaPai : true)).
+                               Where(i => i.GuidPastaPai == guidPastaPai).
                                AsNoTracking().ToListAsync();
 
             return _mapper.Map<List<ItemOutput>>(linq);

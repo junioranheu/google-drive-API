@@ -4,5 +4,6 @@
     {
         public const string NomeSistema = "Drive @anheu";
         public const int QtdLimiteMBsImport = 5 * 1_048_576;
+        public const int OffsetChecarValidadeItemEmHoras = 6;
     }
 }

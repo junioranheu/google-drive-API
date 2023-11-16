@@ -10,7 +10,7 @@ namespace DriveAnheu.Application.UseCases.Itens.ObterItem
     {
         public async Task<ItemOutput?> Execute(Guid guid)
         {
-            Item? linq = await _context.Itens.Where(p => p.Guid == guid).AsNoTracking().FirstOrDefaultAsync();
+            Item? linq = await _context.Itens.Where(i => i.Guid == guid).AsNoTracking().FirstOrDefaultAsync();
 
             return _mapper.Map<ItemOutput>(linq);
         }

@@ -22,5 +22,12 @@ namespace DriveAnheu.API.Controllers
 
             return Ok(await _autenticarUsuarioCommand.Execute());
         }
+
+        [HttpPost("autenticarLazy")]
+        [AllowAnonymous]
+        public async Task<ActionResult<string>> AutenticarLazy()
+        {
+            return Ok((await _autenticarUsuarioCommand.Execute()).Token);
+        }
     }
 }

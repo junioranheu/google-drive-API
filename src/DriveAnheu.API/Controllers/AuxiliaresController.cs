@@ -1,4 +1,5 @@
-﻿using DriveAnheu.Domain.Consts;
+﻿using DriveAnheu.Application.UseCases.Itens.ChecarValidadeItem;
+using DriveAnheu.Domain.Consts;
 using DriveAnheu.Domain.Enums;
 using DriveAnheu.Infrastructure.Factory.ConnectionFactory;
 using Microsoft.AspNetCore.Authorization;
@@ -9,7 +10,7 @@ namespace DriveAnheu.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuxiliaresController(IConnectionFactory _connectionFactory) : Controller
+    public class AuxiliaresController(IConnectionFactory _connectionFactory, IChecarValidadeItemCommand _checarValidadeItemCommand) : Controller
     {
         [HttpGet("obterStatusBanco")]
         [AllowAnonymous]
@@ -45,6 +46,19 @@ namespace DriveAnheu.API.Controllers
             }
 
             return Ok(lista);
+        }
+
+        [HttpGet("checarValidadeItem")]
+        [AllowAnonymous]
+        public async Task<ActionResult> ChecarValidadeItem(int m)
+        {
+            if (GerarHorarioBrasilia().Minute != m)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, "O parâmetro m está incorreto");
+            }
+
+            await _checarValidadeItemCommand.Execute(isForcar: true);
+            return Ok();
         }
     }
 }

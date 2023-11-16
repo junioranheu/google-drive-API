@@ -1,4 +1,5 @@
-﻿using DriveAnheu.Application.UseCases.Itens.CriarItem;
+﻿using DriveAnheu.Application.UseCases.Itens.ChecarValidadeItem;
+using DriveAnheu.Application.UseCases.Itens.CriarItem;
 using DriveAnheu.Application.UseCases.Itens.ListarItem;
 using DriveAnheu.Application.UseCases.Itens.ObterItem;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +13,7 @@ namespace DriveAnheu.Application.UseCases.Itens
             services.AddScoped<IObterItemQuery, ObterItemQuery>();
             services.AddScoped<IListarItemQuery, ListarItemQuery>();
             services.AddScoped<ICriarItemCommand, CriarItemCommand>();
+            services.AddScoped<IChecarValidadeItemCommand, ChecarValidadeItemCommand>();
 
             return services;
         }
