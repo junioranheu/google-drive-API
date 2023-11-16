@@ -37,7 +37,6 @@ namespace DriveAnheu.API.Controllers
             return Ok(output);
         }
 
-        // abae0779-2547-4630-a851-25757fcbcb5a
         [HttpGet("listar")]
         [Authorize]
         public async Task<ActionResult<ItemOutput>> ListarPorGuidPastaPai(Guid? guidPastaPai)
