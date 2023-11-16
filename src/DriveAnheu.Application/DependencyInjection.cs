@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using DriveAnheu.Application.AutoMapper;
+using DriveAnheu.Application.UseCases.Itens;
 using DriveAnheu.Application.UseCases.Logs;
-using DriveAnheu.Application.UseCases.Pastas;
 using DriveAnheu.Application.UseCases.Usuarios;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -48,7 +48,7 @@ namespace DriveAnheu.Application
         {
             services.AddLogsApplication();
             services.AddUsuariosApplication();
-            services.AddPastasApplication();
+            services.AddItensApplication();
         }
     }
 }

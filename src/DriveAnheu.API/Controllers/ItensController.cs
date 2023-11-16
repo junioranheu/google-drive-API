@@ -1,8 +1,8 @@
-﻿using DriveAnheu.Application.UseCases.Pastas.CriarPasta;
-using DriveAnheu.Application.UseCases.Pastas.ListarPasta;
-using DriveAnheu.Application.UseCases.Pastas.ObterPasta;
-using DriveAnheu.Application.UseCases.Pastas.Shared.Input;
-using DriveAnheu.Application.UseCases.Pastas.Shared.Output;
+﻿using DriveAnheu.Application.UseCases.Itens.CriarItem;
+using DriveAnheu.Application.UseCases.Itens.ListarItem;
+using DriveAnheu.Application.UseCases.Itens.ObterItem;
+using DriveAnheu.Application.UseCases.Itens.Shared.Input;
+using DriveAnheu.Application.UseCases.Itens.Shared.Output;
 using DriveAnheu.Domain.Consts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,22 +12,22 @@ namespace DriveAnheu.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class PastasController(
-        IObterPastaQuery _obterPastaQuery,
-        IListarPastaQuery _listarPastaQuery,
-        ICriarPastaCommand _criarPastaCommand
-        ) : BaseController<PastasController>
+    public class ItensController(
+        IObterItemQuery _obterItemQuery,
+        IListarItemQuery _listarItemQuery,
+        ICriarItemCommand _criarItemCommand
+        ) : BaseController<ItensController>
     {
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<PastaOutput>> Obter(Guid guid)
+        public async Task<ActionResult<ItemOutput>> Obter(Guid guid)
         {
             if (guid == Guid.Empty)
             {
                 throw new Exception(ObterDescricaoEnum(CodigoErroEnum.BadRequest));
             }
 
-            PastaOutput? output = await _obterPastaQuery.Execute(guid);
+            ItemOutput? output = await _obterItemQuery.Execute(guid);
 
             if (output is null)
             {
@@ -37,11 +37,12 @@ namespace DriveAnheu.API.Controllers
             return Ok(output);
         }
 
+        // abae0779-2547-4630-a851-25757fcbcb5a
         [HttpGet("listar")]
         [Authorize]
-        public async Task<ActionResult<PastaOutput>> Listar(Guid? guid)
+        public async Task<ActionResult<ItemOutput>> ListarPorGuidPastaPai(Guid? guidPastaPai)
         {
-            List<PastaOutput>? output = await _listarPastaQuery.Execute(guid);
+            List<ItemOutput>? output = await _listarItemQuery.Execute(guidPastaPai);
 
             if (output?.Count == 0)
             {
@@ -53,11 +54,10 @@ namespace DriveAnheu.API.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult> Criar([FromForm] PastaInput input)
+        public async Task<ActionResult> Criar([FromForm] ItemInput input)
         {
-            await _criarPastaCommand.Execute(input);
+            await _criarItemCommand.Execute(input);
             return Ok();
         }
-
     }
 }

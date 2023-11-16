@@ -12,7 +12,6 @@ namespace DriveAnheu.Infrastructure.Data
         public DbSet<Usuario> Usuarios { get; set; }
 
         // Principal;
-        public DbSet<Pasta> Pastas { get; set; }
         public DbSet<Item> Itens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

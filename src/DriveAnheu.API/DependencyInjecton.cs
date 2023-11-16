@@ -1,5 +1,5 @@
 ﻿using DriveAnheu.API.Filters;
-using DriveAnheu.Application.UseCases.Pastas.Shared.Input;
+using DriveAnheu.Application.UseCases.Itens.Shared.Input;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
@@ -84,7 +84,7 @@ namespace DriveAnheu.API
             services.AddFluentValidationAutoValidation();
             services.AddFluentValidationClientsideAdapters();
 
-            AssemblyScanner? validators = AssemblyScanner.FindValidatorsInAssemblyContaining<PastaInput>();
+            AssemblyScanner? validators = AssemblyScanner.FindValidatorsInAssemblyContaining<ItemInputValidator>();
             validators.ForEach(x => services.AddValidatorsFromAssemblyContaining(x.ValidatorType));
         }
     }
