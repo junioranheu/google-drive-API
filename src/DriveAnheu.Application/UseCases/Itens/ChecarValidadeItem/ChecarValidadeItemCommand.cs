@@ -2,25 +2,28 @@
 using DriveAnheu.Domain.Entities;
 using DriveAnheu.Domain.Enums;
 using DriveAnheu.Infrastructure.Data;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using static junioranheu_utils_package.Fixtures.Convert;
 using static junioranheu_utils_package.Fixtures.Get;
+using static junioranheu_utils_package.Fixtures.Post;
 
 namespace DriveAnheu.Application.UseCases.Itens.ChecarValidadeItem
 {
-    public sealed class ChecarValidadeItemCommand(DriveAnheuContext _context) : IChecarValidadeItemCommand
+    public sealed class ChecarValidadeItemCommand(DriveAnheuContext _context, IWebHostEnvironment _webHostEnvironment) : IChecarValidadeItemCommand
     {
         public async Task Execute(bool isForcar = false)
         {
             List<Item>? listaExpirados = await _context.Itens.Where(i => EF.Functions.DateDiffHour(i.Data, GerarHorarioBrasilia()) > SistemaConst.OffsetChecarValidadeItemEmHoras).ToListAsync();
 
-            if (listaExpirados.Count == 0 && !isForcar)
-            {
-                return;
-            }
+            //if (listaExpirados.Count == 0 && !isForcar)
+            //{
+            //    return;
+            //}
 
-            const string path = "XD";
             await DeletarItensExpirados_BancoDeDados(listaExpirados);
-            await DeletarItensExpirados_Arquivos(listaExpirados);
+            DeletarItensExpirados_Arquivos(listaExpirados);
             List<Item> listaRecriados = await RecriarItensPadrao_BancoDeDados();
             await RecriarItensPadrao_Arquivos(listaRecriados);
         }
@@ -31,9 +34,16 @@ namespace DriveAnheu.Application.UseCases.Itens.ChecarValidadeItem
             await _context.SaveChangesAsync();
         }
 
-        private async Task DeletarItensExpirados_Arquivos(List<Item> listaExpirados)
+        private void DeletarItensExpirados_Arquivos(List<Item> listaExpirados)
         {
+            List<string> nomesEspeficos = listaExpirados.Select(x => x.Nome).ToList();
 
+            if (nomesEspeficos.Count == 0)
+            {
+                return;
+            }
+
+            DeletarArquivosEmPasta(path: SistemaConst.PathUploadItem, webRootPath: _webHostEnvironment.ContentRootPath, listaNomes: nomesEspeficos);
         }
 
         private async Task<List<Item>> RecriarItensPadrao_BancoDeDados()
@@ -61,48 +71,41 @@ namespace DriveAnheu.Application.UseCases.Itens.ChecarValidadeItem
 
         private async Task RecriarItensPadrao_Arquivos(List<Item> listaRecriados)
         {
-   
-        }
-
-        /// <summary>
-        /// // Example: Delete all files in the folder
-        /// string folderPath = xqwldkqwp-dkqwopdkqwo0pifjqweoifhewofhew
-        /// DeleteFilesInFolder(folderPath);
-        /// Example: Delete only .txt and .log files
-        ///  string[] fileTypes = { ".txt", ".log" };
-        /// DeleteFilesInFolder(folderPath, fileTypes);
-        ///   // Example: Delete files with specified names
-        /// List<string> specificFileNames = new List<string> { "example1.txt", "example2.txt" };
-        /// deletedFiles = DeleteFilesInFolder(folderPath, fileNames: specificFileNames);
-        /// </summary>
-        private static bool DeletarArquivosEmPasta(string path, List<string>? listaExtensoes = null, List<string>? listaNomes = null)
-        {
-            if (Directory.Exists(path))
+            if (listaRecriados.Count == 0)
             {
-                string[] files;
-
-                if (listaExtensoes is not null && listaExtensoes.Count > 0)
-                {
-                    files = Directory.GetFiles(path).Where(x => listaExtensoes.Any(extensao => x.EndsWith(extensao, StringComparison.OrdinalIgnoreCase))).ToArray();
-                }
-                else if (listaNomes is not null && listaNomes.Count > 0)
-                {
-                    files = Directory.GetFiles(path).Where(x => listaNomes.Contains(Path.GetFileName(x), StringComparer.OrdinalIgnoreCase)).ToArray();
-                }
-                else
-                {
-                    files = Directory.GetFiles(path);
-                }
-
-                foreach (string file in files)
-                {
-                    File.Delete(file);
-                }
-
-                return true;
+                return;
             }
 
-            return false;
+            foreach (var item in listaRecriados)
+            {
+                if (item.Tipo == ItemTipoEnum.Pasta)
+                {
+                    continue;
+                }
+
+                string base64 = string.Empty;
+
+                if (item.Nome.Contains("Rohee", StringComparison.OrdinalIgnoreCase))
+                {
+                    base64 = SistemaConst.Base64Rohee;
+                }
+                else if (item.Nome.Contains("Perro", StringComparison.OrdinalIgnoreCase))
+                {
+                    base64 = SistemaConst.Base64Perro;
+                }
+                else if (item.Nome.Contains("Pota", StringComparison.OrdinalIgnoreCase))
+                {
+                    base64 = SistemaConst.Base64Pota;
+                }
+
+                if (string.IsNullOrEmpty(base64))
+                {
+                    continue;
+                }
+
+                IFormFile iFormFile = ConverterBase64ParaFile(base64);
+                await UparImagem(arquivo: iFormFile, nomeArquivo: item.Guid.ToString(), nomePasta: SistemaConst.PathUploadItem, nomeArquivoAnterior: null, webRootPath: _webHostEnvironment.ContentRootPath);
+            }
         }
     }
 }

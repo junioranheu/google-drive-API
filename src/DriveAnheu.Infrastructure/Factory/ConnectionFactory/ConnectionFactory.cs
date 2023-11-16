@@ -4,15 +4,8 @@ using System.Diagnostics;
 
 namespace DriveAnheu.Infrastructure.Factory.ConnectionFactory
 {
-    public class ConnectionFactory : IConnectionFactory
+    public class ConnectionFactory(IConfiguration _configuration) : IConnectionFactory
     {
-        private readonly IConfiguration _configuration;
-
-        public ConnectionFactory(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
         public string ObterStringConnection()
         {
             string nomeConnectionString = _configuration["SystemSettings:NomeConnectionString"] ?? string.Empty;

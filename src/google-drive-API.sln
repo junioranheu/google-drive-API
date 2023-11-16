@@ -5,11 +5,11 @@ VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DriveAnheu.API", "DriveAnheu.API\DriveAnheu.API.csproj", "{17734607-7BD8-4663-AE2E-58D0C812EAB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriveAnheu.Infrastructure", "DriveAnheu.Infrastructure\DriveAnheu.Infrastructure.csproj", "{DA05A0B7-E32F-414D-B90B-6692DCA5A24A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DriveAnheu.Infrastructure", "DriveAnheu.Infrastructure\DriveAnheu.Infrastructure.csproj", "{DA05A0B7-E32F-414D-B90B-6692DCA5A24A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriveAnheu.Application", "DriveAnheu.Application\DriveAnheu.Application.csproj", "{92AF7917-15A2-4EB0-B359-72FF6F31BE15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DriveAnheu.Application", "DriveAnheu.Application\DriveAnheu.Application.csproj", "{92AF7917-15A2-4EB0-B359-72FF6F31BE15}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriveAnheu.Domain", "DriveAnheu.Domain\DriveAnheu.Domain.csproj", "{FF71A54B-FF2F-4E2D-8BD0-A432C6DCD9C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DriveAnheu.Domain", "DriveAnheu.Domain\DriveAnheu.Domain.csproj", "{FF71A54B-FF2F-4E2D-8BD0-A432C6DCD9C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
