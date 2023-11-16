@@ -1,11 +1,8 @@
-﻿using DriveAnheu.Application.UseCases.Shared.Models.Output;
-using DriveAnheu.Domain.Consts;
+﻿using DriveAnheu.Domain.Consts;
 using DriveAnheu.Domain.Enums;
 using DriveAnheu.Infrastructure.Factory.ConnectionFactory;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel;
-using System.Reflection;
 using static junioranheu_utils_package.Fixtures.Get;
 
 namespace DriveAnheu.API.Controllers
@@ -38,9 +35,9 @@ namespace DriveAnheu.API.Controllers
         [HttpGet("listarItemTipoEnum")]
         [ResponseCache(Duration = TemposConst.UmaHoraEmSegundos)]
         [AllowAnonymous]
-        public ActionResult<List<EnumOutput>> ListarItemTipoEnum()
+        public ActionResult<List<dynamic>> ListarItemTipoEnum()
         {
-            List<EnumOutput> lista = ListarEnum<ItemTipoEnum>();
+            var lista = ListarEnum<ItemTipoEnum>();
 
             if (lista.Count == 0)
             {
@@ -49,23 +46,5 @@ namespace DriveAnheu.API.Controllers
 
             return Ok(lista);
         }
-
-        #region metodos_auxiliares
-        /// <summary>
-        /// Recebe um <Enum> e lista todos os valores dele mapeados pela classe de resposta "EnumOutput";
-        /// O método trata o Enum caso ele tenha/não tenha objetos com "[Description]";
-        /// </summary>
-        private static List<EnumOutput> ListarEnum<TEnum>() where TEnum : Enum
-        {
-            return Enum.GetValues(typeof(TEnum)).
-                   Cast<TEnum>().
-                   Select(x =>
-                   {
-                       FieldInfo? info = x.GetType().GetField(x.ToString());
-                       string desc = info!.GetCustomAttributes(typeof(DescriptionAttribute), false).FirstOrDefault() is DescriptionAttribute descriptionAttribute ? descriptionAttribute.Description : x.ToString();
-                       return new EnumOutput { Id = (int)(object)x, Item = desc };
-                   }).ToList();
-        }
-        #endregion
     }
 }
