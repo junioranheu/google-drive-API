@@ -8,11 +8,11 @@ namespace DriveAnheu.Infrastructure.Data
         // Outros;
         public DbSet<Log> Logs { get; set; }
 
-        // Usuários;
-        public DbSet<Usuario> Usuarios { get; set; }
-
         // Principal;
+        public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Item> Itens { get; set; }
+        public DbSet<HistoricoExpiracao> HistoricosExpiracoes { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
