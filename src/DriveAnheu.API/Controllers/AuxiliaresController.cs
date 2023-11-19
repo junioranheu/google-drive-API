@@ -48,7 +48,7 @@ namespace DriveAnheu.API.Controllers
             return Ok(lista);
         }
 
-        [HttpGet("checarValidadeItem")]
+        [HttpPost("checarValidadeItem")]
         [AllowAnonymous]
         public async Task<ActionResult> ChecarValidadeItem(int m)
         {
@@ -59,6 +59,13 @@ namespace DriveAnheu.API.Controllers
 
             await _checarValidadeItemCommand.Execute(isForcar: true);
             return Ok();
+        }
+
+        [HttpGet("obterOffsetChecarValidadeItemEmHoras")]
+        [AllowAnonymous]
+        public ActionResult<string> ObterOffsetChecarValidadeItemEmHoras()
+        {
+            return Ok(SistemaConst.OffsetChecarValidadeItemEmHoras);
         }
     }
 }

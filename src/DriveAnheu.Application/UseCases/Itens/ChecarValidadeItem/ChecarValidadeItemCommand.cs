@@ -15,17 +15,43 @@ namespace DriveAnheu.Application.UseCases.Itens.ChecarValidadeItem
     {
         public async Task Execute(bool isForcar = false)
         {
-            List<Item>? listaExpirados = await _context.Itens.Where(i => EF.Functions.DateDiffHour(i.Data, GerarHorarioBrasilia()) > SistemaConst.OffsetChecarValidadeItemEmHoras).ToListAsync();
+            bool isExpirar = await VerificarIsExpirar();
 
-            //if (listaExpirados.Count == 0 && !isForcar)
-            //{
-            //    return;
-            //}
+            if (!isExpirar && !isForcar)
+            {
+                return;
+            }
 
+            List<Item> listaExpirados = await ListarItensExpirados();
             await DeletarItensExpirados_BancoDeDados(listaExpirados);
             DeletarItensExpirados_Arquivos(listaExpirados);
+
             List<Item> listaRecriados = await RecriarItensPadrao_BancoDeDados();
             await RecriarItensPadrao_Arquivos(listaRecriados);
+
+            await RegistrarExpiracao();
+        }
+
+        private async Task<bool> VerificarIsExpirar()
+        {
+            bool isVazia = !await _context.HistoricosExpiracoes.AsNoTracking().AnyAsync();
+
+            if (isVazia)
+            {
+                return isVazia;
+            }
+
+            bool isExpirar = await _context.HistoricosExpiracoes.
+                             Where(h => EF.Functions.DateDiffHour(h.Data, GerarHorarioBrasilia()) > SistemaConst.OffsetChecarValidadeItemEmHoras).
+                             AsNoTracking().AnyAsync();
+
+            return isExpirar;
+        }
+
+        private async Task<List<Item>> ListarItensExpirados()
+        {
+            List<Item> listaExpirados = await _context.Itens.AsNoTracking().ToListAsync();
+            return listaExpirados;
         }
 
         private async Task DeletarItensExpirados_BancoDeDados(List<Item> listaExpirados)
@@ -106,6 +132,17 @@ namespace DriveAnheu.Application.UseCases.Itens.ChecarValidadeItem
                 IFormFile iFormFile = ConverterBase64ParaIFormFile(base64);
                 await SubirArquivoEmPasta(arquivo: iFormFile, nomeArquivoSemExtensao: item.Guid.ToString(), extensao: ".jpg", path: SistemaConst.PathUploadItem, nomeArquivoAnteriorSemExtensao: string.Empty, webRootPath: _webHostEnvironment.ContentRootPath);
             }
+        }
+
+        private async Task RegistrarExpiracao()
+        {
+            HistoricoExpiracao h = new()
+            {
+                Data = GerarHorarioBrasilia()
+            };
+
+            await _context.AddAsync(h);
+            await _context.SaveChangesAsync();
         }
     }
 }
