@@ -104,7 +104,7 @@ namespace DriveAnheu.Application.UseCases.Itens.ChecarValidadeItem
                 }
 
                 IFormFile iFormFile = ConverterBase64ParaFile(base64);
-                await UparImagem(arquivo: iFormFile, nomeArquivo: item.Guid.ToString(), nomePasta: SistemaConst.PathUploadItem, nomeArquivoAnterior: null, webRootPath: _webHostEnvironment.ContentRootPath);
+                await SubirArquivoEmPasta(arquivo: iFormFile, nomeArquivoSemExtensao: item.Guid.ToString(), extensao: ObterExtensao(iFormFile), path: SistemaConst.PathUploadItem, nomeArquivoAnteriorSemExtensao: string.Empty, webRootPath: _webHostEnvironment.ContentRootPath);
             }
         }
     }
