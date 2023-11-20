@@ -12,7 +12,6 @@ namespace DriveAnheu.API.Controllers
     public class UsuariosController(IWebHostEnvironment _environment, IAutenticarUsuarioCommand _autenticarUsuarioCommand) : BaseController<UsuariosController>
     {
         [HttpPost("autenticar")]
-        [AllowAnonymous]
         public async Task<ActionResult<UsuarioOutput>> Autenticar()
         {
             if (User.Identity!.IsAuthenticated)

@@ -9,6 +9,11 @@ namespace DriveAnheu.Application.UseCases.Itens.CriarItem
     {
         public async Task Execute(ItemInput input)
         {
+            if (input.GuidPastaPai is null)
+            {
+                input.GuidPastaPai = Guid.Empty;
+            }
+
             var x = _mapper.Map<Item>(input);
 
             await _context.AddAsync(x);

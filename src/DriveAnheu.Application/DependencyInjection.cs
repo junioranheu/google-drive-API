@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DriveAnheu.Application.AutoMapper;
+using DriveAnheu.Application.UseCases.HistoricosExpiracoes;
 using DriveAnheu.Application.UseCases.Itens;
 using DriveAnheu.Application.UseCases.Logs;
 using DriveAnheu.Application.UseCases.Usuarios;
@@ -49,6 +50,7 @@ namespace DriveAnheu.Application
             services.AddLogsApplication();
             services.AddUsuariosApplication();
             services.AddItensApplication();
+            services.AddHistoricosExpiracoesApplication();
         }
     }
 }

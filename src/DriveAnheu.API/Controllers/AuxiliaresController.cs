@@ -1,4 +1,5 @@
-﻿using DriveAnheu.Application.UseCases.Itens.ChecarValidadeItem;
+﻿using DriveAnheu.Application.UseCases.HistoricosExpiracoes.ObterDataUltimoHistoricoExpiracao;
+using DriveAnheu.Application.UseCases.Itens.ChecarValidadeItem;
 using DriveAnheu.Domain.Consts;
 using DriveAnheu.Domain.Enums;
 using DriveAnheu.Infrastructure.Factory.ConnectionFactory;
@@ -10,7 +11,11 @@ namespace DriveAnheu.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuxiliaresController(IConnectionFactory _connectionFactory, IChecarValidadeItemCommand _checarValidadeItemCommand) : Controller
+    public class AuxiliaresController(
+        IConnectionFactory _connectionFactory,
+        IChecarValidadeItemCommand _checarValidadeItemCommand,
+        IObterDataUltimoHistoricoExpiracaoQuery _obterDataUltimoHistoricoExpiracaoQuery
+        ) : Controller
     {
         [HttpGet("obterStatusBanco")]
         [AllowAnonymous]
@@ -61,11 +66,20 @@ namespace DriveAnheu.API.Controllers
             return Ok();
         }
 
-        [HttpGet("obterOffsetChecarValidadeItemEmHoras")]
+        [HttpGet("obterInfosHistoricoExpiracao")]
         [AllowAnonymous]
-        public ActionResult<string> ObterOffsetChecarValidadeItemEmHoras()
+        public async Task<ActionResult<(DateTime, DateTime)>> ObterInfosHistoricoExpiracao()
         {
-            return Ok(SistemaConst.OffsetChecarValidadeItemEmHoras);
+            DateTime? dataUltimoRegistro = await _obterDataUltimoHistoricoExpiracaoQuery.Execute();
+
+            if (dataUltimoRegistro is null)
+            {
+                throw new Exception("Não há histórico de expiração no momento");
+            }
+
+            DateTime proximaVarredura = dataUltimoRegistro.GetValueOrDefault().AddHours(SistemaConst.OffsetChecarValidadeItemEmHoras);
+
+            return Ok(new { dataUltimoRegistro, proximaVarredura });
         }
     }
 }

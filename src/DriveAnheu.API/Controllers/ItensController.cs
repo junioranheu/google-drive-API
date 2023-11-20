@@ -42,15 +42,10 @@ namespace DriveAnheu.API.Controllers
 
         [HttpGet("listar")]
         [Authorize]
-        public async Task<ActionResult<ItemOutput>> ListarPorGuidPastaPai(Guid? guidPastaPai)
+        public async Task<ActionResult<ItemOutput>> ListarPorGuidPastaPai(Guid guidPastaPai)
         {
             await _checarValidadeItemCommand.Execute();
             List<ItemOutput>? output = await _listarItemQuery.Execute(guidPastaPai);
-
-            if (output?.Count == 0)
-            {
-                throw new Exception(ObterDescricaoEnum(CodigoErroEnum.NaoEncontrado));
-            }
 
             return Ok(output);
         }

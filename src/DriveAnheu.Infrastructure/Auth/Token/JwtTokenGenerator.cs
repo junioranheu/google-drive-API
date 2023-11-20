@@ -17,7 +17,7 @@ namespace DriveAnheu.Infrastructure.Auth.Token
             _jwtSettings = jwtOptions.Value;
         }
 
-        public string GerarToken(int usuarioId, Guid id)
+        public string GerarToken(int usuarioId, Guid guid)
         {
             JwtSecurityTokenHandler tokenHandler = new();
 
@@ -28,7 +28,7 @@ namespace DriveAnheu.Infrastructure.Auth.Token
             ClaimsIdentity claims = new(new Claim[]
             {
                 new(type: ClaimTypes.NameIdentifier, usuarioId.ToString()),
-                new(type: ClaimTypes.Thumbprint, id.ToString())
+                new(type: ClaimTypes.Thumbprint, guid.ToString())
             });
 
             DateTime horarioBrasiliaAjustado = HorarioBrasiliaAjustado();
@@ -43,8 +43,8 @@ namespace DriveAnheu.Infrastructure.Auth.Token
                 SigningCredentials = signingCredentials
             };
 
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var jwt = tokenHandler.WriteToken(token);
+            SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
+            string jwt = tokenHandler.WriteToken(token);
             return jwt;
         }
 
