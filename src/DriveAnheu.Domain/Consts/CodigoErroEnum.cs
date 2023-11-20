@@ -90,6 +90,9 @@ namespace DriveAnheu.Domain.Consts
         [Description("Não autorizado")]
         NaoAutorizado = 403,
 
+        [Description("Não autorizado. Parece que você não é o dono desse item")]
+        NaoAutorizado_Item = 403,
+
         [Description("Registro não encontrado")]
         NaoEncontrado = 404,
 

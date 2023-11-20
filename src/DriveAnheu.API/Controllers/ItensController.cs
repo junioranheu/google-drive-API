@@ -56,10 +56,10 @@ namespace DriveAnheu.API.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult> Criar([FromForm] ItemInput input)
+        public async Task<ActionResult<string>> Criar(ItemInput input)
         {
-            await _criarItemCommand.Execute(input);
-            return Ok(true);
+            Guid guid = await _criarItemCommand.Execute(input);
+            return Ok(guid);
         }
 
         [HttpGet("listarFolderRotas")]

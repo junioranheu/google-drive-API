@@ -21,7 +21,7 @@ namespace DriveAnheu.Application.UseCases.Itens.DeletarItem
 
             if (linq?.Usuarios?.Guid != usuarioGuid)
             {
-                throw new Exception(ObterDescricaoEnum(CodigoErroEnum.NaoAutorizado));
+                throw new Exception(ObterDescricaoEnum(CodigoErroEnum.NaoAutorizado_Item));
             }
 
             DeletarArquivosEmPasta(path: SistemaConst.PathUploadItem, webRootPath: _webHostEnvironment.ContentRootPath, listaNomes: [linq.Guid.ToString()]);

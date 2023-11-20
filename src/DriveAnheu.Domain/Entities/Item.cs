@@ -12,7 +12,6 @@ namespace DriveAnheu.Domain.Entities
         [Key]
         public int ItemId { get; set; }
 
-        [Required]
         public Guid Guid { get; set; } = Guid.Empty;
 
         public string Nome { get; set; } = string.Empty;
