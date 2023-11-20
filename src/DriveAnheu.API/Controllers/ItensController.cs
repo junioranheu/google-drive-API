@@ -59,7 +59,6 @@ namespace DriveAnheu.API.Controllers
         [Authorize]
         public async Task<ActionResult> Criar([FromForm] ItemInput input)
         {
-            await _checarValidadeItemCommand.Execute();
             await _criarItemCommand.Execute(input);
             return Ok();
         }

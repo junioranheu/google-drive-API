@@ -9,7 +9,7 @@ namespace DriveAnheu.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsuariosController(IAutenticarUsuarioCommand _autenticarUsuarioCommand) : BaseController<UsuariosController>
+    public class UsuariosController(IWebHostEnvironment _environment, IAutenticarUsuarioCommand _autenticarUsuarioCommand) : BaseController<UsuariosController>
     {
         [HttpPost("autenticar")]
         [AllowAnonymous]
@@ -27,6 +27,11 @@ namespace DriveAnheu.API.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<string>> AutenticarLazy()
         {
+            if (_environment.IsProduction())
+            {
+                return Ok(string.Empty);
+            }
+
             return Ok((await _autenticarUsuarioCommand.Execute()).Token);
         }
     }
