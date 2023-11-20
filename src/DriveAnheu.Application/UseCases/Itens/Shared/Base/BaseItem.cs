@@ -8,7 +8,7 @@ namespace DriveAnheu.Application.UseCases.Itens.Shared.Base
     {
         public BaseItem() { }
 
-        internal static string ObterArquivoBase64(IWebHostEnvironment webHostEnvironment, string nomeArquivo)
+        internal static string ObterArquivoBase64_Pipe_Extensao(IWebHostEnvironment webHostEnvironment, string nomeArquivo)
         {
             string path = Path.Combine(webHostEnvironment.ContentRootPath, SistemaConst.PathUploadItem);
             string[] matchingFiles = Directory.GetFiles(path, $"{nomeArquivo}.*");
@@ -18,11 +18,18 @@ namespace DriveAnheu.Application.UseCases.Itens.Shared.Base
                 return string.Empty;
             }
 
-            string arquivo = matchingFiles[0];
+            string? arquivo = matchingFiles.FirstOrDefault();
+
+            if (arquivo is null)
+            {
+                return string.Empty;
+            }
+
+            string extensao = Path.GetExtension(arquivo);
             byte[] bytes = File.ReadAllBytes(arquivo);
             string base64 = ConverterBytesParaBase64(bytes);
 
-            return base64;
+            return $"{base64}|{extensao}";
         }
     }
 }

@@ -38,7 +38,7 @@ namespace DriveAnheu.Application.UseCases.Itens.ListarItem
 
                 try
                 {
-                    item.ArquivoBase64 = ObterArquivoBase64(_webHostEnvironment, item.Guid.ToString());
+                    item.ArquivoBase64_Pipe_Extensao = ObterArquivoBase64_Pipe_Extensao(_webHostEnvironment, item.Guid.ToString());
                 }
                 catch (Exception ex)
                 {

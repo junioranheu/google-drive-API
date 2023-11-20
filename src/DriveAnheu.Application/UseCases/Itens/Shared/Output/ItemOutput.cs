@@ -20,6 +20,6 @@ namespace DriveAnheu.Application.UseCases.Itens.Shared.Output
 
         public Guid? GuidPastaPai { get; set; } = null;
 
-        public string? ArquivoBase64 { get; set; } = string.Empty;
+        public string? ArquivoBase64_Pipe_Extensao { get; set; } = string.Empty;
     }
 }
