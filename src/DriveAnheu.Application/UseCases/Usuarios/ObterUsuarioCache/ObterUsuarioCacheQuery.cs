@@ -17,7 +17,7 @@ namespace DriveAnheu.Application.UseCases.Usuarios.ObterUsuarioCache
             if (!_memoryCache.TryGetValue(keyCache, out UsuarioOutput? usuario))
             {
                 usuario = await _obterUsuarioQuery.Execute(id: null, guid: guid);
-                _memoryCache.Set(keyCache, usuario, TimeSpan.FromMinutes(1));
+                _memoryCache.Set(keyCache, usuario, TimeSpan.FromMinutes(60));
             }
 
             return usuario;

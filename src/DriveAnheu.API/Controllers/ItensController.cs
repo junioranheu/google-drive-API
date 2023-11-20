@@ -58,7 +58,8 @@ namespace DriveAnheu.API.Controllers
         [Authorize]
         public async Task<ActionResult<string>> Criar(ItemInput input)
         {
-            Guid guid = await _criarItemCommand.Execute(input);
+            int usuarioId = await ObterUsuarioId();
+            Guid guid = await _criarItemCommand.Execute(input, usuarioId);
             return Ok(guid);
         }
 
@@ -79,8 +80,8 @@ namespace DriveAnheu.API.Controllers
                 throw new Exception(ObterDescricaoEnum(CodigoErroEnum.BadRequest));
             }
 
-            Guid usuarioGuid = ObterUsuarioGuid();
-            await _deletarItemCommand.Execute(guid, usuarioGuid);
+            int usuarioId = await ObterUsuarioId();
+            await _deletarItemCommand.Execute(guid, usuarioId);
 
             return Ok(true);
         }

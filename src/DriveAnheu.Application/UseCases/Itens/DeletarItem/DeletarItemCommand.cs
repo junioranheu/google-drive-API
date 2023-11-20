@@ -1,5 +1,6 @@
 ﻿using DriveAnheu.Domain.Consts;
 using DriveAnheu.Domain.Entities;
+using DriveAnheu.Domain.Enums;
 using DriveAnheu.Infrastructure.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -10,21 +11,24 @@ namespace DriveAnheu.Application.UseCases.Itens.DeletarItem
 {
     public sealed class DeletarItemCommand(DriveAnheuContext _context, IWebHostEnvironment _webHostEnvironment) : IDeletarItemCommand
     {
-        public async Task Execute(Guid guid, Guid usuarioGuid)
+        public async Task Execute(Guid guid, int usuarioId)
         {
             Item? linq = await _context.Itens.Where(i => i.Guid == guid).AsNoTracking().FirstOrDefaultAsync();
 
             if (linq is null)
             {
-                return;
+                throw new Exception(ObterDescricaoEnum(CodigoErroEnum.NaoEncontrado));
             }
 
-            if (linq?.Usuarios?.Guid != usuarioGuid)
+            if (linq?.UsuarioId != usuarioId)
             {
                 throw new Exception(ObterDescricaoEnum(CodigoErroEnum.NaoAutorizado_Item));
             }
 
-            DeletarArquivosEmPasta(path: SistemaConst.PathUploadItem, webRootPath: _webHostEnvironment.ContentRootPath, listaNomes: [linq.Guid.ToString()]);
+            if (linq.Tipo != ItemTipoEnum.Pasta)
+            {
+                DeletarArquivosEmPasta(path: SistemaConst.PathUploadItem, webRootPath: _webHostEnvironment.ContentRootPath, listaNomes: [linq.Guid.ToString()]);
+            }
 
             _context.Itens.Remove(linq);
             await _context.SaveChangesAsync();

@@ -4,6 +4,6 @@ namespace DriveAnheu.Application.UseCases.Itens.CriarItem
 {
     public interface ICriarItemCommand
     {
-        Task<Guid> Execute(ItemInput input);
+        Task<Guid> Execute(ItemInput input, int usuarioId);
     }
 }
