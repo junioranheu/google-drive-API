@@ -67,6 +67,7 @@ namespace DriveAnheu.API.Controllers
         }
 
         [HttpGet("obterInfosHistoricoExpiracao")]
+        [ResponseCache(Duration = TemposConst.SeisHorasEmSegundos)]
         [AllowAnonymous]
         public async Task<ActionResult<(DateTime, DateTime)>> ObterInfosHistoricoExpiracao()
         {

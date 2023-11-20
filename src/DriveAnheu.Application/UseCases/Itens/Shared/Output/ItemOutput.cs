@@ -19,5 +19,7 @@ namespace DriveAnheu.Application.UseCases.Itens.Shared.Output
         public DateTime Data { get; set; }
 
         public Guid? GuidPastaPai { get; set; } = null;
+
+        public string? ArquivoBase64 { get; set; } = string.Empty;
     }
 }

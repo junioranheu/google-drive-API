@@ -8,6 +8,8 @@
 
         public const int UmaHoraEmSegundos = 3600;
 
+        public const int SeisHorasEmSegundos = 21600;
+
         public const int UmDiaEmSegundos = 86400;
 
         public const int UmMesEmSegundos = 2629800;

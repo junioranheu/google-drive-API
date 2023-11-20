@@ -1,4 +1,5 @@
-﻿using DriveAnheu.Domain.Consts;
+﻿using DriveAnheu.Application.UseCases.HistoricosExpiracoes.ObterDataUltimoHistoricoExpiracao;
+using DriveAnheu.Domain.Consts;
 using DriveAnheu.Domain.Entities;
 using DriveAnheu.Domain.Enums;
 using DriveAnheu.Infrastructure.Data;
@@ -11,7 +12,10 @@ using static junioranheu_utils_package.Fixtures.Post;
 
 namespace DriveAnheu.Application.UseCases.Itens.ChecarValidadeItem
 {
-    public sealed class ChecarValidadeItemCommand(DriveAnheuContext _context, IWebHostEnvironment _webHostEnvironment) : IChecarValidadeItemCommand
+    public sealed class ChecarValidadeItemCommand(
+        DriveAnheuContext _context,
+        IWebHostEnvironment _webHostEnvironment,
+        IObterDataUltimoHistoricoExpiracaoQuery _obterDataUltimoHistoricoExpiracaoQuery) : IChecarValidadeItemCommand
     {
         public async Task Execute(bool isForcar = false)
         {
@@ -39,9 +43,8 @@ namespace DriveAnheu.Application.UseCases.Itens.ChecarValidadeItem
                 return isVazia;
             }
 
-            bool isExpirar = await _context.HistoricosExpiracoes.
-                             Where(h => EF.Functions.DateDiffHour(h.Data, GerarHorarioBrasilia()) > SistemaConst.OffsetChecarValidadeItemEmHoras).
-                             AsNoTracking().AnyAsync();
+            DateTime? dataUltimoRegistro = await _obterDataUltimoHistoricoExpiracaoQuery.Execute();
+            bool isExpirar = GerarHorarioBrasilia() > (dataUltimoRegistro.GetValueOrDefault().AddHours(SistemaConst.OffsetChecarValidadeItemEmHoras));
 
             return isExpirar;
         }
