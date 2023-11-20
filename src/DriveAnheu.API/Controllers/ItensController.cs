@@ -1,5 +1,6 @@
 ﻿using DriveAnheu.Application.UseCases.Itens.ChecarValidadeItem;
 using DriveAnheu.Application.UseCases.Itens.CriarItem;
+using DriveAnheu.Application.UseCases.Itens.ListarFolderRotas;
 using DriveAnheu.Application.UseCases.Itens.ListarItem;
 using DriveAnheu.Application.UseCases.Itens.ObterItem;
 using DriveAnheu.Application.UseCases.Itens.Shared.Input;
@@ -17,7 +18,8 @@ namespace DriveAnheu.API.Controllers
         IObterItemQuery _obterItemQuery,
         IListarItemQuery _listarItemQuery,
         ICriarItemCommand _criarItemCommand,
-        IChecarValidadeItemCommand _checarValidadeItemCommand
+        IChecarValidadeItemCommand _checarValidadeItemCommand,
+        IListarFolderRotasQuery _listarFolderRotasQuery
         ) : BaseController<ItensController>
     {
         [HttpGet]
@@ -56,6 +58,14 @@ namespace DriveAnheu.API.Controllers
         {
             await _criarItemCommand.Execute(input);
             return Ok();
+        }
+
+        [HttpGet("listarFolderRotas")]
+        [Authorize]
+        public async Task<ActionResult<List<FolderRotaOutput>>> ListarFolderRotas(Guid guid)
+        {
+            List<FolderRotaOutput> output = await _listarFolderRotasQuery.Execute(guid);
+            return Ok(output);
         }
     }
 }

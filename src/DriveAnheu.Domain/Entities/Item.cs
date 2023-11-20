@@ -19,7 +19,7 @@ namespace DriveAnheu.Domain.Entities
 
         public ItemTipoEnum Tipo { get; set; }
 
-        public Guid? GuidPastaPai { get; set; } = null;
+        public Guid GuidPastaPai { get; set; } = Guid.Empty;
 
         public int? UsuarioId { get; set; }
         public Usuario? Usuarios { get; init; }

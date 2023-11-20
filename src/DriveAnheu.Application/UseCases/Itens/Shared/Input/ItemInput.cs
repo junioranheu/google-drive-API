@@ -8,6 +8,6 @@ namespace DriveAnheu.Application.UseCases.Itens.Shared.Input
 
         public ItemTipoEnum Tipo { get; set; }
 
-        public Guid? GuidPastaPai { get; set; } = null;
+        public Guid GuidPastaPai { get; set; } = Guid.Empty;
     }
 }
