@@ -15,7 +15,7 @@ namespace DriveAnheu.Application.UseCases.Itens.DeletarItem
         {
             Item? linq = await _context.Itens.Where(i => i.Guid == guid).AsNoTracking().FirstOrDefaultAsync();
 
-            if (linq is null)
+            if (linq is null && guid != Guid.Empty)
             {
                 throw new Exception(ObterDescricaoEnum(CodigoErroEnum.NaoEncontrado));
             }
