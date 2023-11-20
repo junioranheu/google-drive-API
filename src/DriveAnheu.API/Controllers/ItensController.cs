@@ -74,7 +74,13 @@ namespace DriveAnheu.API.Controllers
         [Authorize]
         public async Task<ActionResult> Deletar(Guid guid)
         {
-            await _deletarItemCommand.Execute(guid);
+            if (guid == Guid.Empty)
+            {
+                throw new Exception(ObterDescricaoEnum(CodigoErroEnum.BadRequest));
+            }
+
+            Guid usuarioGuid = ObterUsuarioGuid();
+            await _deletarItemCommand.Execute(guid, usuarioGuid);
             return Ok();
         }
     }

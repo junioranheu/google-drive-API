@@ -3,6 +3,6 @@ namespace DriveAnheu.Application.UseCases.Itens.DeletarItem
 {
     public interface IDeletarItemCommand
     {
-        Task Execute(Guid guid);
+        Task Execute(Guid guid, Guid usuarioGuid);
     }
 }
