@@ -29,7 +29,7 @@ namespace DriveAnheu.Application.UseCases.Itens.ListarFolderRotas
                 // Adicionar nova rota;
                 FolderRotaOutput x = new()
                 {
-                    Guid = guid,
+                    Guid = rota,
                     Nome = nome
                 };
 
@@ -45,7 +45,7 @@ namespace DriveAnheu.Application.UseCases.Itens.ListarFolderRotas
 
             if (linq is null)
             {
-                return (Guid.Empty, string.Empty, Guid.Empty, false);
+                return (Guid.Empty, "Meu Drive comp.", Guid.Empty, false);
             }
 
             Guid rota = linq.Guid;
