@@ -29,7 +29,8 @@ namespace DriveAnheu.API.Filters
                 Codigo = StatusCodes.Status500InternalServerError,
                 Data = ObterDetalhesDataHora(),
                 Caminho = context.HttpContext.Request.Path,
-                Mensagens = new string[] { mensagemErroSimples }
+                Mensagens = new string[] { mensagemErroSimples },
+                IsErro = true
             });
 
             int usuarioId =  new BaseFilter().BaseObterUsuarioId(context);

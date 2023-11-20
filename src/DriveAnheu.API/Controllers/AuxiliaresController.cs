@@ -63,7 +63,7 @@ namespace DriveAnheu.API.Controllers
             }
 
             await _checarValidadeItemCommand.Execute(isForcar: true);
-            return Ok();
+            return Ok(true);
         }
 
         [HttpGet("obterInfosHistoricoExpiracao")]

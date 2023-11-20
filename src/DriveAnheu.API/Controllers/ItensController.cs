@@ -59,7 +59,7 @@ namespace DriveAnheu.API.Controllers
         public async Task<ActionResult> Criar([FromForm] ItemInput input)
         {
             await _criarItemCommand.Execute(input);
-            return Ok();
+            return Ok(true);
         }
 
         [HttpGet("listarFolderRotas")]
@@ -81,7 +81,8 @@ namespace DriveAnheu.API.Controllers
 
             Guid usuarioGuid = ObterUsuarioGuid();
             await _deletarItemCommand.Execute(guid, usuarioGuid);
-            return Ok();
+
+            return Ok(true);
         }
     }
 }
