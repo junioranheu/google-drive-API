@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
+using DriveAnheu.Application.UseCases.Itens.Shared.Base;
 using DriveAnheu.Application.UseCases.Itens.Shared.Output;
-using DriveAnheu.Domain.Consts;
 using DriveAnheu.Domain.Entities;
 using DriveAnheu.Domain.Enums;
 using DriveAnheu.Infrastructure.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using static junioranheu_utils_package.Fixtures.Convert;
 
 namespace DriveAnheu.Application.UseCases.Itens.ListarItem
 {
@@ -15,13 +14,18 @@ namespace DriveAnheu.Application.UseCases.Itens.ListarItem
         DriveAnheuContext _context,
         IWebHostEnvironment _webHostEnvironment,
         ILogger<ListarItemQuery> _logger,
-        IMapper _mapper) : IListarItemQuery
+        IMapper _mapper) : BaseItem, IListarItemQuery
     {
         public async Task<List<ItemOutput>?> Execute(Guid? guidPastaPai)
         {
             List<Item>? linq = await _context.Itens.
                                Where(i => i.GuidPastaPai == guidPastaPai).
                                AsNoTracking().ToListAsync();
+
+            if (linq.Count == 0)
+            {
+                return [];
+            }
 
             List<ItemOutput> output = _mapper.Map<List<ItemOutput>>(linq);
 
@@ -34,7 +38,7 @@ namespace DriveAnheu.Application.UseCases.Itens.ListarItem
 
                 try
                 {
-                    item.ArquivoBase64 = ObterArquivoBase64(item.Guid.ToString());
+                    item.ArquivoBase64 = ObterArquivoBase64(_webHostEnvironment, item.Guid.ToString());
                 }
                 catch (Exception ex)
                 {
@@ -43,23 +47,6 @@ namespace DriveAnheu.Application.UseCases.Itens.ListarItem
             }
 
             return output;
-        }
-
-        private string ObterArquivoBase64(string nomeArquivo)
-        {
-            string path = Path.Combine(_webHostEnvironment.ContentRootPath, SistemaConst.PathUploadItem);
-            string[] matchingFiles = Directory.GetFiles(path, $"{nomeArquivo}.*");
-
-            if (matchingFiles.Length < 1)
-            {
-                return string.Empty;
-            }
-
-            string arquivo = matchingFiles[0];
-            byte[] bytes = File.ReadAllBytes(arquivo);
-            string base64 = ConverterBytesParaBase64(bytes);
-
-            return base64;
         }
     }
 }
