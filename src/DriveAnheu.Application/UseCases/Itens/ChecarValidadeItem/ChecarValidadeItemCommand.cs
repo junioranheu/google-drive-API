@@ -22,13 +22,11 @@ namespace DriveAnheu.Application.UseCases.Itens.ChecarValidadeItem
                 return;
             }
 
-            List<Item> listaExpirados = await ListarItensExpirados();
-            await DeletarItensExpirados_BancoDeDados(listaExpirados);
-            DeletarItensExpirados_Arquivos(listaExpirados);
+            await DeletarItensExpirados_BancoDeDados();
+            DeletarItensExpirados_Arquivos();
 
             List<Item> listaRecriados = await RecriarItensPadrao_BancoDeDados();
             await RecriarItensPadrao_Arquivos(listaRecriados);
-
             await RegistrarExpiracao();
         }
 
@@ -48,28 +46,15 @@ namespace DriveAnheu.Application.UseCases.Itens.ChecarValidadeItem
             return isExpirar;
         }
 
-        private async Task<List<Item>> ListarItensExpirados()
+        private async Task DeletarItensExpirados_BancoDeDados()
         {
-            List<Item> listaExpirados = await _context.Itens.AsNoTracking().ToListAsync();
-            return listaExpirados;
-        }
-
-        private async Task DeletarItensExpirados_BancoDeDados(List<Item> listaExpirados)
-        {
-            _context.RemoveRange(listaExpirados);
+            await _context.Itens.ExecuteDeleteAsync();
             await _context.SaveChangesAsync();
         }
 
-        private void DeletarItensExpirados_Arquivos(List<Item> listaExpirados)
+        private void DeletarItensExpirados_Arquivos()
         {
-            List<string> nomesEspeficos = listaExpirados.Select(x => x.Nome).ToList();
-
-            if (nomesEspeficos.Count == 0)
-            {
-                return;
-            }
-
-            DeletarArquivosEmPasta(path: SistemaConst.PathUploadItem, webRootPath: _webHostEnvironment.ContentRootPath, listaNomes: nomesEspeficos);
+            DeletarArquivosEmPasta(path: SistemaConst.PathUploadItem, webRootPath: _webHostEnvironment.ContentRootPath);
         }
 
         private async Task<List<Item>> RecriarItensPadrao_BancoDeDados()

@@ -41,7 +41,7 @@ namespace DriveAnheu.API.Controllers
         }
 
         [HttpGet("listar")]
-        // [Authorize]
+        [Authorize]
         public async Task<ActionResult<ItemOutput>> ListarPorGuidPastaPai(Guid? guidPastaPai)
         {
             await _checarValidadeItemCommand.Execute();

@@ -48,9 +48,9 @@ namespace DriveAnheu.API.Controllers
             return Ok(lista);
         }
 
-        [HttpPost("checarValidadeItem")]
-        [AllowAnonymous]
-        public async Task<ActionResult> ChecarValidadeItem(int m)
+        [HttpPost("forcarChecarValidadeItem")]
+        [Authorize]
+        public async Task<ActionResult> ForcarChecarValidadeItem(int m)
         {
             if (GerarHorarioBrasilia().Minute != m)
             {
