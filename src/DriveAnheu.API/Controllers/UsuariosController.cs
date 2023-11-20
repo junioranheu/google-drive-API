@@ -25,6 +25,11 @@ namespace DriveAnheu.API.Controllers
 
         [HttpPost("autenticarLazy")]
         [AllowAnonymous]
+#if DEBUG
+        [ApiExplorerSettings(IgnoreApi = false)]
+#else
+[ApiExplorerSettings(IgnoreApi = true)]
+#endif
         public async Task<ActionResult<string>> AutenticarLazy()
         {
             if (_environment.IsProduction())
