@@ -4,6 +4,6 @@ namespace DriveAnheu.Application.UseCases.Itens.ObterItem
 {
     public interface IObterItemQuery
     {
-        Task<ItemOutput?> Execute(Guid guidPastaPai);
+        Task<ItemOutput?> Execute(Guid guid);
     }
 }

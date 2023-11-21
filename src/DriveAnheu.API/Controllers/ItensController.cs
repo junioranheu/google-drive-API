@@ -7,6 +7,7 @@ using DriveAnheu.Application.UseCases.Itens.ListarItem;
 using DriveAnheu.Application.UseCases.Itens.ObterItem;
 using DriveAnheu.Application.UseCases.Itens.Shared.Input;
 using DriveAnheu.Application.UseCases.Itens.Shared.Output;
+using DriveAnheu.Application.UseCases.Itens.UploadItem;
 using DriveAnheu.Domain.Consts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +24,8 @@ namespace DriveAnheu.API.Controllers
         IChecarValidadeItemCommand _checarValidadeItemCommand,
         IListarFolderRotasQuery _listarFolderRotasQuery,
         IDeletarItemCommand _deletarItemCommand,
-        IEditarItemCommand _editarItemCommand
+        IEditarItemCommand _editarItemCommand,
+        IUploadItemCommand _uploadItemCommand
         ) : BaseController<ItensController>
     {
         [HttpGet]
@@ -62,6 +64,7 @@ namespace DriveAnheu.API.Controllers
         {
             int usuarioId = await ObterUsuarioId();
             Guid guid = await _criarItemCommand.Execute(input, usuarioId);
+
             return Ok(guid);
         }
 
@@ -70,6 +73,7 @@ namespace DriveAnheu.API.Controllers
         public async Task<ActionResult<List<FolderRotaOutput>>> ListarFolderRotas(Guid guid)
         {
             List<FolderRotaOutput> output = await _listarFolderRotasQuery.Execute(guid);
+
             return Ok(output);
         }
 
@@ -101,6 +105,21 @@ namespace DriveAnheu.API.Controllers
             await _editarItemCommand.Execute(guid, nome, usuarioId);
 
             return Ok(true);
+        }
+
+        [HttpPost("upload")]
+        [Authorize]
+        public async Task<ActionResult<ItemOutput>> Upload([FromForm] ItemUploadInput input)
+        {
+            int usuarioId = await ObterUsuarioId();
+            ItemOutput? resp = await _uploadItemCommand.Execute(input, usuarioId);
+
+            if (resp is null)
+            {
+                throw new Exception(ObterDescricaoEnum(CodigoErroEnum.BadRequest));
+            }
+
+            return Ok(resp);
         }
     }
 }
