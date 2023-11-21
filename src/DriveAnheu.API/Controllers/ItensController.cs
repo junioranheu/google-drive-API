@@ -5,6 +5,7 @@ using DriveAnheu.Application.UseCases.Itens.EditarItem;
 using DriveAnheu.Application.UseCases.Itens.ListarFolderRotas;
 using DriveAnheu.Application.UseCases.Itens.ListarItem;
 using DriveAnheu.Application.UseCases.Itens.ObterItem;
+using DriveAnheu.Application.UseCases.Itens.ObterTamanhoEmDiscoEmBytes;
 using DriveAnheu.Application.UseCases.Itens.Shared.Input;
 using DriveAnheu.Application.UseCases.Itens.Shared.Output;
 using DriveAnheu.Application.UseCases.Itens.UploadItem;
@@ -25,7 +26,8 @@ namespace DriveAnheu.API.Controllers
         IListarFolderRotasQuery _listarFolderRotasQuery,
         IDeletarItemCommand _deletarItemCommand,
         IEditarItemCommand _editarItemCommand,
-        IUploadItemCommand _uploadItemCommand
+        IUploadItemCommand _uploadItemCommand,
+        IObterTamanhoEmDiscoEmBytesQuery _obterTamanhoEmDiscoEmBytesQuery
         ) : BaseController<ItensController>
     {
         [HttpGet]
@@ -120,6 +122,16 @@ namespace DriveAnheu.API.Controllers
             }
 
             return Ok(resp);
+        }
+
+        [HttpGet("obterTamanhoEmDiscoEmBytes")]
+        [Authorize]
+        public async Task<ActionResult<double>> ObterTamanhoEmDiscoEmBytes()
+        {
+            int usuarioId = await ObterUsuarioId();
+            double tamanhoEmDiscoEmBytes = await _obterTamanhoEmDiscoEmBytesQuery.Execute(usuarioId);
+
+            return Ok(tamanhoEmDiscoEmBytes);
         }
     }
 }
