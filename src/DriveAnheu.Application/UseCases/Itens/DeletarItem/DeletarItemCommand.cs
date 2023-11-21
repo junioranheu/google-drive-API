@@ -13,24 +13,39 @@ namespace DriveAnheu.Application.UseCases.Itens.DeletarItem
     {
         public async Task Execute(Guid guid, int usuarioId)
         {
-            Item? linq = await _context.Itens.Where(i => i.Guid == guid).AsNoTracking().FirstOrDefaultAsync();
+            if (guid == Guid.Empty)
+            {
+                throw new Exception(ObterDescricaoEnum(CodigoErroEnum.BadRequest));
+            }
 
-            if (linq is null && guid != Guid.Empty)
+            List<Item>? linq = await _context.Itens.Where(i => i.Guid == guid || i.GuidPastaPai == guid).AsNoTracking().ToListAsync();
+
+            if (linq.Count == 0)
             {
                 throw new Exception(ObterDescricaoEnum(CodigoErroEnum.NaoEncontrado));
             }
 
-            if (linq?.UsuarioId != usuarioId)
+            Item? itemPrincipal = linq.Where(x => x.Guid == guid).FirstOrDefault();
+
+            if (itemPrincipal is null)
+            {
+                throw new Exception(ObterDescricaoEnum(CodigoErroEnum.NaoEncontrado));
+            }
+
+            if (itemPrincipal.UsuarioId != usuarioId)
             {
                 throw new Exception(ObterDescricaoEnum(CodigoErroEnum.NaoAutorizado_Item));
             }
 
-            if (linq.Tipo != ItemTipoEnum.Pasta)
+            foreach (var item in linq)
             {
-                DeletarArquivosEmPasta(path: SistemaConst.PathUploadItem, webRootPath: _webHostEnvironment.ContentRootPath, listaNomes: [linq.Guid.ToString()]);
+                if (item.Tipo != ItemTipoEnum.Pasta)
+                {
+                    DeletarArquivosEmPasta(path: SistemaConst.PathUploadItem, webRootPath: _webHostEnvironment.ContentRootPath, listaNomes: [item.Guid.ToString()]);
+                }
             }
 
-            _context.Itens.Remove(linq);
+            _context.Itens.RemoveRange(linq);
             await _context.SaveChangesAsync();
         }
     }
