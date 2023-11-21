@@ -1,6 +1,7 @@
 ﻿using DriveAnheu.Application.UseCases.Itens.ChecarValidadeItem;
 using DriveAnheu.Application.UseCases.Itens.CriarItem;
 using DriveAnheu.Application.UseCases.Itens.DeletarItem;
+using DriveAnheu.Application.UseCases.Itens.EditarItem;
 using DriveAnheu.Application.UseCases.Itens.ListarFolderRotas;
 using DriveAnheu.Application.UseCases.Itens.ListarItem;
 using DriveAnheu.Application.UseCases.Itens.ObterItem;
@@ -21,7 +22,8 @@ namespace DriveAnheu.API.Controllers
         ICriarItemCommand _criarItemCommand,
         IChecarValidadeItemCommand _checarValidadeItemCommand,
         IListarFolderRotasQuery _listarFolderRotasQuery,
-        IDeletarItemCommand _deletarItemCommand
+        IDeletarItemCommand _deletarItemCommand,
+        IEditarItemCommand _editarItemCommand
         ) : BaseController<ItensController>
     {
         [HttpGet]
@@ -82,6 +84,21 @@ namespace DriveAnheu.API.Controllers
 
             int usuarioId = await ObterUsuarioId();
             await _deletarItemCommand.Execute(guid, usuarioId);
+
+            return Ok(true);
+        }
+
+        [HttpPut]
+        [Authorize]
+        public async Task<ActionResult> Editar(Guid guid, string nome)
+        {
+            if (guid == Guid.Empty)
+            {
+                throw new Exception(ObterDescricaoEnum(CodigoErroEnum.BadRequest));
+            }
+
+            int usuarioId = await ObterUsuarioId();
+            await _editarItemCommand.Execute(guid, nome, usuarioId);
 
             return Ok(true);
         }

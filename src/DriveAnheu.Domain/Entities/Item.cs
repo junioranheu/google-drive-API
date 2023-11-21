@@ -24,5 +24,7 @@ namespace DriveAnheu.Domain.Entities
         public Usuario? Usuarios { get; init; }
 
         public DateTime Data { get; set; } = GerarHorarioBrasilia();
+
+        public DateTime? DataMod { get; set; } = null;
     }
 }
