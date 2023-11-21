@@ -59,7 +59,7 @@ namespace DriveAnheu.API.Controllers
         {
             if (GerarHorarioBrasilia().Minute != m)
             {
-                return StatusCode(StatusCodes.Status403Forbidden, "O parâmetro m está incorreto");
+                throw new Exception("O parâmetro está incorreto");
             }
 
             await _checarValidadeItemCommand.Execute(isForcar: true);
