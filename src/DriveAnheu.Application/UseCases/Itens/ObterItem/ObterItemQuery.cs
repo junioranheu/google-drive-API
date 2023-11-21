@@ -19,7 +19,10 @@ namespace DriveAnheu.Application.UseCases.Itens.ObterItem
     {
         public async Task<ItemOutput?> Execute(Guid guid)
         {
-            Item? linq = await _context.Itens.Where(i => i.Guid == guid).AsNoTracking().FirstOrDefaultAsync();
+            Item? linq = await _context.Itens.
+                         Include(u => u.Usuarios).
+                         Where(i => i.Guid == guid).
+                         AsNoTracking().FirstOrDefaultAsync();
 
             if (linq is null)
             {

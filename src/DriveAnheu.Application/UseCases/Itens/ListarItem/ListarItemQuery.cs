@@ -19,6 +19,7 @@ namespace DriveAnheu.Application.UseCases.Itens.ListarItem
         public async Task<List<ItemOutput>?> Execute(Guid? guidPastaPai)
         {
             List<Item>? linq = await _context.Itens.
+                               Include(u => u.Usuarios).
                                Where(i => i.GuidPastaPai == guidPastaPai).
                                AsNoTracking().ToListAsync();
 

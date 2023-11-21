@@ -36,6 +36,8 @@ namespace DriveAnheu.Application.UseCases.Itens.ListarFolderRotas
                 output.Add(x);
             } while (isExistePastaPai);
 
+            output.Reverse();
+
             return output;
         }
 
