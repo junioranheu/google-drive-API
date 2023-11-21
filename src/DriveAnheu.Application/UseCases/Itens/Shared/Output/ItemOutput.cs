@@ -18,6 +18,8 @@ namespace DriveAnheu.Application.UseCases.Itens.Shared.Output
 
         public DateTime Data { get; set; }
 
+        public DateTime DataMod { get; set; }
+
         public Guid GuidPastaPai { get; set; } = Guid.Empty;
 
         public string? ArquivoBase64_Pipe_Extensao { get; set; } = string.Empty;
