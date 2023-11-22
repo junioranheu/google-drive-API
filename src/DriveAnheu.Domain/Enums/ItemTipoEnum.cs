@@ -14,6 +14,9 @@ namespace DriveAnheu.Domain.Enums
         Planilha = 3,
 
         [Description("Imagem")]
-        Imagem = 4
+        Imagem = 4,
+
+        [Description("PDF")]
+        PDF = 5
     }
 }

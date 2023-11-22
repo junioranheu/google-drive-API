@@ -44,7 +44,7 @@ namespace DriveAnheu.Application.UseCases.Itens.UploadItem
             };
 
             Guid guid = await _criarItemCommand.Execute(item, usuarioId);
-     
+
             return guid;
         }
         private async Task UploadItem(ItemUploadInput input, Guid guid, string extensao)
@@ -73,9 +73,12 @@ namespace DriveAnheu.Application.UseCases.Itens.UploadItem
                 // Textos;
                 case "txt":
                 case "doc":
-                case "docx":      
-                case "pdf":
+                case "docx":
                     return ItemTipoEnum.Doc;
+
+                // PDF;
+                case "pdf":
+                    return ItemTipoEnum.PDF;
 
                 // Sheets;
                 case "xls":
