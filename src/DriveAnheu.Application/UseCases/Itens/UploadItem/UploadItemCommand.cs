@@ -5,7 +5,6 @@ using DriveAnheu.Application.UseCases.Itens.Shared.Output;
 using DriveAnheu.Domain.Consts;
 using DriveAnheu.Domain.Enums;
 using Microsoft.AspNetCore.Hosting;
-using System;
 using static junioranheu_utils_package.Fixtures.Get;
 using static junioranheu_utils_package.Fixtures.Post;
 
