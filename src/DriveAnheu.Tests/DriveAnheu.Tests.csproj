@@ -26,7 +26,6 @@
 
   <ItemGroup>
     <Folder Include="Assets\" />
-    <Folder Include="Fixtures\Mocks\" />
     <Folder Include="Tests\Itens\" />
     <Folder Include="Utils\" />
   </ItemGroup>
