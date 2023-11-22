@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DriveAnheu.Application", "D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DriveAnheu.Domain", "DriveAnheu.Domain\DriveAnheu.Domain.csproj", "{FF71A54B-FF2F-4E2D-8BD0-A432C6DCD9C3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriveAnheu.Tests", "DriveAnheu.Tests\DriveAnheu.Tests.csproj", "{A84B0E8A-18C4-4CBE-BB4C-16BEAEA8D804}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{FF71A54B-FF2F-4E2D-8BD0-A432C6DCD9C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF71A54B-FF2F-4E2D-8BD0-A432C6DCD9C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF71A54B-FF2F-4E2D-8BD0-A432C6DCD9C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A84B0E8A-18C4-4CBE-BB4C-16BEAEA8D804}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A84B0E8A-18C4-4CBE-BB4C-16BEAEA8D804}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A84B0E8A-18C4-4CBE-BB4C-16BEAEA8D804}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A84B0E8A-18C4-4CBE-BB4C-16BEAEA8D804}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
