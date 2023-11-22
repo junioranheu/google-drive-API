@@ -85,6 +85,7 @@ namespace DriveAnheu.Tests.Tests.Usuarios
         [Fact]
         public async Task Criar_TestarSucesso()
         {
+            // Arrange;
             var service = new CriarUsuarioCommand(_context, _mapper);
 
             // Act
