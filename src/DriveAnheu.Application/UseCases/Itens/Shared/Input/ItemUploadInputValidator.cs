@@ -16,7 +16,7 @@ namespace DriveAnheu.Application.UseCases.Itens.Shared.Input
                 NotNull().WithMessage("Nenhum arquivo foi selecionado").
                 Must(x => x.Length > 0).WithMessage("O arquivo não pode ser vazio").
                 Must(x => ValidarExtensaoArquivo(x)).WithMessage("Essa extensão não é permitida no momento").
-                Must(x => x.Length <= SistemaConst.QtdLimiteMBsImport).WithMessage("O arquivo excedeu o tamanho limite");
+                Must(x => x.Length <= SistemaConst.QtdLimiteMBsImportEmBytes).WithMessage($"O arquivo excedeu o tamanho limite de {SistemaConst.QtdLimiteMBsImportEmMB} MB");
         }
 
         private static bool ValidarGuid(Guid guid)

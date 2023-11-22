@@ -66,8 +66,8 @@ namespace DriveAnheu.Application.UseCases.Itens.ChecarValidadeItem
 
             List<Item> listaItens =
             [
-                new Item() { Guid = pasta1, Nome = "Pasta do @junioranheu", Tipo = ItemTipoEnum.Pasta, GuidPastaPai = Guid.Empty },
-                new Item() { Guid = Guid.NewGuid(), Nome = "Pasta vazia", Tipo = ItemTipoEnum.Pasta, GuidPastaPai = Guid.Empty },
+                new Item() { Guid = pasta1, Nome = "@junioranheu", Tipo = ItemTipoEnum.Pasta, GuidPastaPai = Guid.Empty },
+                new Item() { Guid = Guid.NewGuid(), Nome = "Olá, mundo 👋", Tipo = ItemTipoEnum.Pasta, GuidPastaPai = Guid.Empty },
                 new Item() { Guid = Guid.NewGuid(), Nome = "Rohee", Tipo = ItemTipoEnum.Imagem, GuidPastaPai = Guid.Empty },
                 new Item() { Guid = Guid.NewGuid(), Nome = "Perro", Tipo = ItemTipoEnum.Imagem, GuidPastaPai = Guid.Empty },
                 new Item() { Guid = Guid.NewGuid(), Nome = "Pota", Tipo = ItemTipoEnum.Imagem, GuidPastaPai = pasta1 }

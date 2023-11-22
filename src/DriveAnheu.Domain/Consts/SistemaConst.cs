@@ -3,7 +3,8 @@
     public static class SistemaConst
     {
         public const string NomeSistema = "Drive @anheu";
-        public const int QtdLimiteMBsImport = 5 * 1_048_576;
+        public const int QtdLimiteMBsImportEmBytes = 5 * 1_048_576;
+        public const int QtdLimiteMBsImportEmMB = 5;
         public const int OffsetChecarValidadeItemEmHoras = 12;
 
         public const string PathUploadItem = "Uploads/Itens";
