@@ -70,15 +70,18 @@ namespace DriveAnheu.Application.UseCases.Itens.UploadItem
                 case "webp":
                     return ItemTipoEnum.Imagem;
 
-                // Textos;
+                // Texto básico;
                 case "txt":
+                    return ItemTipoEnum.Txt;
+
+                // Textos;
                 case "doc":
                 case "docx":
                     return ItemTipoEnum.Doc;
 
                 // PDF;
                 case "pdf":
-                    return ItemTipoEnum.PDF;
+                    return ItemTipoEnum.Pdf;
 
                 // Sheets;
                 case "xls":

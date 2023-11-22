@@ -17,6 +17,9 @@ namespace DriveAnheu.Domain.Enums
         Imagem = 4,
 
         [Description("PDF")]
-        PDF = 5
+        Pdf = 5,
+
+        [Description("Arquivo de texto básico")]
+        Txt = 6
     }
 }
