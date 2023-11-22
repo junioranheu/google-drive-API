@@ -36,9 +36,11 @@ namespace DriveAnheu.Application.UseCases.Itens.UploadItem
 
         private async Task<Guid> CriarItem(ItemUploadInput input, int usuarioId, string extensao)
         {
+            string nome = $"{GerarStringAleatoria(10, false)}{(!string.IsNullOrEmpty(extensao) ? extensao : string.Empty)}";
+
             ItemInput item = new()
             {
-                Nome = GerarStringAleatoria(10, false),
+                Nome = nome,
                 Tipo = ConverterExtensaoParaItemTipoEnum(extensao),
                 GuidPastaPai = input.GuidPastaPai
             };
