@@ -16,7 +16,7 @@ namespace DriveAnheu.Application.UseCases.Itens.ListarItem
         ILogger<ListarItemQuery> _logger,
         IMapper _mapper) : BaseItem, IListarItemQuery
     {
-        public async Task<List<ItemOutput>?> Execute(Guid? guidPastaPai)
+        public async Task<List<ItemOutput>?> Execute(Guid guidPastaPai)
         {
             List<Item>? linq = await _context.Itens.
                                Include(u => u.Usuarios).
@@ -43,7 +43,7 @@ namespace DriveAnheu.Application.UseCases.Itens.ListarItem
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "{mensagemErro}", ex.Message);
+                    _logger.LogError(ex, "{ex.Message}", ex.Message);
                 }
             }
 

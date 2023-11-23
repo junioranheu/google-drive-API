@@ -39,7 +39,6 @@ namespace DriveAnheu.API.Controllers
                 throw new Exception(ObterDescricaoEnum(CodigoErroEnum.BadRequest));
             }
 
-            await _checarValidadeItemCommand.Execute();
             ItemOutput? output = await _obterItemQuery.Execute(guid);
 
             if (output is null)

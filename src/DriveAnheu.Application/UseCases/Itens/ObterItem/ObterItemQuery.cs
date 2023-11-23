@@ -41,7 +41,7 @@ namespace DriveAnheu.Application.UseCases.Itens.ObterItem
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "{mensagemErro}", ex.Message);
+                _logger.LogError(ex, "{ex.Message}", ex.Message);
             }
 
             return output;

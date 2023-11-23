@@ -4,6 +4,6 @@ namespace DriveAnheu.Application.UseCases.Itens.ListarItem
 {
     public interface IListarItemQuery
     {
-        Task<List<ItemOutput>?> Execute(Guid? guid);
+        Task<List<ItemOutput>?> Execute(Guid guid);
     }
 }
