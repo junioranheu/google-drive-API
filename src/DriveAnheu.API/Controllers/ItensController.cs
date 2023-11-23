@@ -51,10 +51,10 @@ namespace DriveAnheu.API.Controllers
 
         [HttpGet("listar")]
         [Authorize]
-        public async Task<ActionResult<ItemOutput>> ListarPorGuidPastaPai(Guid guidPastaPai)
+        public async Task<ActionResult<ItemOutput>> ListarPorGuidPastaPai(Guid guidPastaPai, string? key = "")
         {
             await _checarValidadeItemCommand.Execute();
-            List<ItemOutput>? output = await _listarItemQuery.Execute(guidPastaPai);
+            List<ItemOutput>? output = await _listarItemQuery.Execute(guidPastaPai, key);
 
             return Ok(output);
         }

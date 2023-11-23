@@ -16,11 +16,11 @@ namespace DriveAnheu.Application.UseCases.Itens.ListarItem
         ILogger<ListarItemQuery> _logger,
         IMapper _mapper) : BaseItem, IListarItemQuery
     {
-        public async Task<List<ItemOutput>?> Execute(Guid guidPastaPai)
+        public async Task<List<ItemOutput>?> Execute(Guid guidPastaPai, string? key = "")
         {
             List<Item>? linq = await _context.Itens.
                                Include(u => u.Usuarios).
-                               Where(i => i.GuidPastaPai == guidPastaPai).
+                               Where(i => string.IsNullOrEmpty(key) ? i.GuidPastaPai == guidPastaPai : i.Nome.Contains(key)).
                                AsNoTracking().ToListAsync();
 
             if (linq.Count == 0)
