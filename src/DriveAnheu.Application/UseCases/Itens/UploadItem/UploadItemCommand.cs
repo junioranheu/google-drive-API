@@ -35,7 +35,7 @@ namespace DriveAnheu.Application.UseCases.Itens.UploadItem
 
         private async Task<Guid> CriarItem(ItemUploadInput input, int usuarioId, string extensao)
         {
-            string nome = $"{GerarStringAleatoria(10, false)}{(!string.IsNullOrEmpty(extensao) ? extensao : string.Empty)}";
+            string nome = input.Arquivo.FileName ?? $"{GerarStringAleatoria(10, false)}{(!string.IsNullOrEmpty(extensao) ? extensao : string.Empty)}";
 
             ItemInput item = new()
             {
@@ -48,6 +48,7 @@ namespace DriveAnheu.Application.UseCases.Itens.UploadItem
 
             return guid;
         }
+
         private async Task UploadItem(ItemUploadInput input, Guid guid, string extensao, bool isTesteUnitario)
         {
             if (isTesteUnitario)
