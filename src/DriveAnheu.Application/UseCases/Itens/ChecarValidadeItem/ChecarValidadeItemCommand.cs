@@ -68,9 +68,9 @@ namespace DriveAnheu.Application.UseCases.Itens.ChecarValidadeItem
             [
                 new Item() { Guid = pasta1, Nome = "@junioranheu", Tipo = ItemTipoEnum.Pasta, GuidPastaPai = Guid.Empty },
                 new Item() { Guid = Guid.NewGuid(), Nome = "Olá, mundo 👋", Tipo = ItemTipoEnum.Pasta, GuidPastaPai = Guid.Empty },
-                new Item() { Guid = Guid.NewGuid(), Nome = "Rohee", Tipo = ItemTipoEnum.Imagem, GuidPastaPai = Guid.Empty },
-                new Item() { Guid = Guid.NewGuid(), Nome = "Perro", Tipo = ItemTipoEnum.Imagem, GuidPastaPai = Guid.Empty },
-                new Item() { Guid = Guid.NewGuid(), Nome = "Pota", Tipo = ItemTipoEnum.Imagem, GuidPastaPai = pasta1 }
+                new Item() { Guid = Guid.NewGuid(), Nome = "Rohee.jpg", Tipo = ItemTipoEnum.Imagem, GuidPastaPai = Guid.Empty },
+                new Item() { Guid = Guid.NewGuid(), Nome = "Perro.webp", Tipo = ItemTipoEnum.Imagem, GuidPastaPai = Guid.Empty },
+                new Item() { Guid = Guid.NewGuid(), Nome = "Pota.jpg", Tipo = ItemTipoEnum.Imagem, GuidPastaPai = pasta1 }
             ];
 
             foreach (var item in listaItens)
