@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using DriveAnheu.Application.UseCases.Itens.ListarItem;
 using DriveAnheu.Application.UseCases.Itens.Shared.Base;
 using DriveAnheu.Application.UseCases.Itens.Shared.Output;
 using DriveAnheu.Domain.Entities;
@@ -14,7 +13,7 @@ namespace DriveAnheu.Application.UseCases.Itens.ObterItem
     public sealed class ObterItemQuery(
         DriveAnheuContext _context,
         IWebHostEnvironment _webHostEnvironment,
-        ILogger<ListarItemQuery> _logger,
+        ILogger<ObterItemQuery> _logger,
         IMapper _mapper) : BaseItem, IObterItemQuery
     {
         public async Task<ItemOutput?> Execute(Guid guid)
@@ -42,7 +41,7 @@ namespace DriveAnheu.Application.UseCases.Itens.ObterItem
             }
             catch (Exception ex)
             {
-                _logger.LogError(message: ex.Message);
+                _logger.LogError(ex, "{mensagemErro}", ex.Message);
             }
 
             return output;

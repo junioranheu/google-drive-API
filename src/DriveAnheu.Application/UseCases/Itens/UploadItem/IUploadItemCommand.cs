@@ -5,6 +5,6 @@ namespace DriveAnheu.Application.UseCases.Itens.UploadItem
 {
     public interface IUploadItemCommand
     {
-        Task<ItemOutput?> Execute(ItemUploadInput input, int usuarioId);
+        Task<ItemOutput?> Execute(ItemUploadInput input, int usuarioId, bool? isTesteUnitario = false);
     }
 }

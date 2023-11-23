@@ -16,7 +16,7 @@ namespace DriveAnheu.Application.UseCases.Itens.UploadItem
         IObterItemQuery _obterItemQuery
         ) : IUploadItemCommand
     {
-        public async Task<ItemOutput?> Execute(ItemUploadInput input, int usuarioId)
+        public async Task<ItemOutput?> Execute(ItemUploadInput input, int usuarioId, bool? isTesteUnitario = false)
         {
             string extensao = ObterExtensao(input.Arquivo);
             Guid guid = await CriarItem(input, usuarioId, extensao);
@@ -26,7 +26,7 @@ namespace DriveAnheu.Application.UseCases.Itens.UploadItem
                 throw new Exception(ObterDescricaoEnum(CodigoErroEnum.BadRequest));
             }
 
-            await UploadItem(input, guid, extensao);
+            await UploadItem(input, guid, extensao, isTesteUnitario.GetValueOrDefault());
 
             ItemOutput? output = await _obterItemQuery.Execute(guid);
 
@@ -48,8 +48,13 @@ namespace DriveAnheu.Application.UseCases.Itens.UploadItem
 
             return guid;
         }
-        private async Task UploadItem(ItemUploadInput input, Guid guid, string extensao)
+        private async Task UploadItem(ItemUploadInput input, Guid guid, string extensao, bool isTesteUnitario)
         {
+            if (isTesteUnitario)
+            {
+                return;
+            }
+
             await SubirArquivoEmPasta(arquivo: input.Arquivo, nomeArquivoSemExtensao: guid.ToString(), extensao: extensao, path: SistemaConst.PathUploadItem, nomeArquivoAnteriorSemExtensao: string.Empty, webRootPath: _webHostEnvironment.ContentRootPath);
         }
 
@@ -62,33 +67,22 @@ namespace DriveAnheu.Application.UseCases.Itens.UploadItem
 
             string extensionNormalizada = extensao.Replace(".", string.Empty).ToLowerInvariant();
 
-            switch (extensionNormalizada)
+            return extensionNormalizada switch
             {
                 // Imagens;
-                case "jpg":
-                case "jpeg":
-                case "png":
-                case "webp":
-                    return ItemTipoEnum.Imagem;
+                "jpg" or "jpeg" or "png" or "webp" => ItemTipoEnum.Imagem,
 
                 // Texto básico;
-                case "txt":
-                    return ItemTipoEnum.Txt;
+                "txt" => ItemTipoEnum.Txt,
 
                 // Textos;
-                case "doc":
-                case "docx":
-                    return ItemTipoEnum.Doc;
+                "doc" or "docx" => ItemTipoEnum.Doc,
 
                 // PDF;
-                case "pdf":
-                    return ItemTipoEnum.Pdf;
+                "pdf" => ItemTipoEnum.Pdf,
 
                 // Sheets;
-                case "xls":
-                case "xlsx":
-                case "csv":
-                    return ItemTipoEnum.Planilha;
+                "xls" or "xlsx" or "csv" => ItemTipoEnum.Planilha,
 
                 //// Áudios;
                 //case "mp3":
@@ -126,9 +120,8 @@ namespace DriveAnheu.Application.UseCases.Itens.UploadItem
                 //case "cs":
                 //    return ItemTipoEnum.CodigoFonte;
 
-                default:
-                    return ItemTipoEnum.Pasta;
-            }
+                _ => ItemTipoEnum.Pasta,
+            };
         }
     }
 }

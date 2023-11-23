@@ -43,7 +43,7 @@ namespace DriveAnheu.Application.UseCases.Itens.ListarItem
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(message: ex.Message);
+                    _logger.LogError(ex, "{mensagemErro}", ex.Message);
                 }
             }
 
